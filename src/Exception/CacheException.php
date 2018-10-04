@@ -6,10 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Views;
+namespace Spiral\Views\Exception;
 
-
-interface CacheInterface
+class CacheException extends ViewException
 {
 
 }

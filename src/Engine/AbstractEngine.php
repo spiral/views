@@ -15,6 +15,8 @@ use Spiral\Views\LoaderInterface;
  */
 abstract class AbstractEngine implements EngineInterface
 {
+    const EXTENSIONS = [];
+
     /** @var LoaderInterface */
     protected $loader;
 
@@ -24,7 +26,7 @@ abstract class AbstractEngine implements EngineInterface
     public function withLoader(LoaderInterface $loader): EngineInterface
     {
         $engine = clone $this;
-        $engine->loader = $loader;
+        $engine->loader = $loader->withExtensions(static::EXTENSIONS);
 
         return $engine;
     }

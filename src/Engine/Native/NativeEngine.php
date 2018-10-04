@@ -17,6 +17,8 @@ use Spiral\Views\ViewInterface;
 
 class NativeEngine extends AbstractEngine
 {
+    const EXTENSIONS = ['php'];
+
     /** @var ContainerInterface */
     private $container;
 

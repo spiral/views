@@ -19,6 +19,8 @@ interface ContextInterface
      */
     public function getID(): string;
 
+    // todo: change the concept? use unidirectional generators?
+
     /**
      * Create environment with new binded dependency. Must not affect existed context dependencies.
      *
