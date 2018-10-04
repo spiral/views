@@ -23,7 +23,7 @@ final class ViewContext implements ContextInterface
     private $dependencies = [];
 
     /** @var ContainerInterface */
-    protected $container = null;
+    private $container = null;
 
     /**
      * @param ContainerInterface $container
