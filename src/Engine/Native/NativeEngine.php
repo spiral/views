@@ -11,6 +11,8 @@ namespace Spiral\Views\Engine\Native;
 use Psr\Container\ContainerInterface;
 use Spiral\Views\ContextInterface;
 use Spiral\Views\Engine\AbstractEngine;
+use Spiral\Views\Exception\EngineException;
+use Spiral\Views\Exception\LoaderException;
 use Spiral\Views\ViewInterface;
 
 class NativeEngine extends AbstractEngine
@@ -39,6 +41,10 @@ class NativeEngine extends AbstractEngine
      */
     public function get(string $path, ContextInterface $context): ViewInterface
     {
-        return new NativeView($this->loader->getSource($path), $context, $this->container);
+        try {
+            return new NativeView($this->loader->getSource($path), $context, $this->container);
+        } catch (LoaderException $e) {
+            throw new EngineException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
