@@ -17,15 +17,15 @@ interface LoaderInterface
     const NS_SEPARATOR = ':';
 
     /**
-     * Lock loader to limited set of extensions.
+     * Lock loader to specific file extension.
      *
-     * @param array $extensions
+     * @param string $extension
      * @return LoaderInterface
      */
-    public function withExtensions(array $extensions): LoaderInterface;
+    public function withExtension(string $extension): LoaderInterface;
 
     /**
-     * Check if given view path has associated view in a loader.
+     * Check if given view path has associated view in a loader. Path might include namespace prefix or extension.
      *
      * @param string $path
      * @return bool
@@ -33,21 +33,21 @@ interface LoaderInterface
     public function exists(string $path): bool;
 
     /**
-     * Get source for given name.
+     * Get source for given name. Path might include namespace prefix or extension.
      *
      * @param string $path
      * @return ViewSource
      *
      * @throws LoaderException
      */
-    public function getSource(string $path): ViewSource;
+    public function load(string $path): ViewSource;
 
     /**
-     * Get list of all available view paths specific to the loader. When no namespace is specified
-     * loader must return all available views with inclusion of their namespace "namespace:viewName".
+     * Get names of all available views within this loader. Result will include namespace prefix and view name without
+     * extension.
      *
      * @param string|null $namespace
      * @return array
      */
-    public function getPaths(string $namespace = null): array;
+    public function list(string $namespace = null): array;
 }

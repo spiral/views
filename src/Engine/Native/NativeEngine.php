@@ -44,7 +44,7 @@ class NativeEngine extends AbstractEngine
     public function get(string $path, ContextInterface $context): ViewInterface
     {
         try {
-            return new NativeView($this->loader->getSource($path), $context, $this->container);
+            return new NativeView($this->loader->load($path), $context, $this->container);
         } catch (LoaderException $e) {
             throw new EngineException($e->getMessage(), $e->getCode(), $e);
         }

@@ -26,7 +26,7 @@ abstract class AbstractEngine implements EngineInterface
     public function withLoader(LoaderInterface $loader): EngineInterface
     {
         $engine = clone $this;
-        $engine->loader = $loader->withExtensions(static::EXTENSIONS);
+        $engine->loader = $loader->withExtension(static::EXTENSIONS);
 
         return $engine;
     }

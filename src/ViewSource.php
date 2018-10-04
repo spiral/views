@@ -30,21 +30,11 @@ final class ViewSource
      * @param string $name
      * @param string $namespace
      */
-    public function __construct(string $filename, string $name, string $namespace)
+    public function __construct(string $filename, string $namespace, string $name)
     {
         $this->filename = $filename;
-        $this->name = $name;
         $this->namespace = $namespace;
-    }
-
-    /**
-     * Template name.
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
+        $this->name = $name;
     }
 
     /**
@@ -55,6 +45,16 @@ final class ViewSource
     public function getNamespace(): string
     {
         return $this->namespace;
+    }
+
+    /**
+     * Template name.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
