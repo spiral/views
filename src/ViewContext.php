@@ -52,6 +52,7 @@ final class ViewContext implements ContextInterface
      * You can add dependency to a function, closure, or callable pair where first argument is
      * binding name (resolved thought container).
      */
+    // todo: dependency interface
     public function withDependency(string $dependency, callable $source): ContextInterface
     {
         $environment = clone $this;
