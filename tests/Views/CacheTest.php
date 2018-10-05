@@ -67,21 +67,23 @@ class CacheTest extends TestCase
     public function testResetAll()
     {
         $ctx = new ViewContext();
+        $ctx2 = $ctx->withDependency(new ValueDependency('test', 'value'));
+
         $cache = new ViewCache();
 
         $view = $this->getView($ctx, 'default:view');
-        $view2 = $this->getView($ctx, 'other:view');
+        $view2 = $this->getView($ctx2, 'other:view');
 
         $cache->set($ctx, 'default:view', $view);
-        $cache->set($ctx, 'other:view', $view2);
+        $cache->set($ctx2, 'other:view', $view2);
 
         $this->assertTrue($cache->has($ctx, 'default:view'));
-        $this->assertTrue($cache->has($ctx, 'other:view'));
+        $this->assertTrue($cache->has($ctx2, 'other:view'));
 
         $cache->reset();
 
         $this->assertFalse($cache->has($ctx, 'default:view'));
-        $this->assertFalse($cache->has($ctx, 'other:view'));
+        $this->assertFalse($cache->has($ctx2, 'other:view'));
     }
 
     public function testResetPath()
