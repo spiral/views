@@ -40,10 +40,6 @@ class PathParser
      */
     public function match(string $filename): bool
     {
-        if (strpos($filename, '.') === false) {
-            return true;
-        }
-
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         return strtolower($extension) == $this->extension;
     }
