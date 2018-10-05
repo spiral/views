@@ -112,6 +112,10 @@ class PathParser
      */
     private function validatePath(string $path)
     {
+        if (empty($path)) {
+            throw new PathException('A view path is empty');
+        }
+
         if (false !== strpos($path, "\0")) {
             throw new PathException('A view path cannot contain NUL bytes');
         }

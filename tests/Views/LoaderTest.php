@@ -10,6 +10,7 @@ namespace Spiral\Views\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\Files\Files;
+use Spiral\Views\Loader\PathParser;
 use Spiral\Views\ViewLoader;
 
 class LoaderTest extends TestCase
@@ -108,6 +109,42 @@ class LoaderTest extends TestCase
         $loader = $loader->withExtension('php');
 
         $loader->load('inner/file');
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\PathException
+     */
+    public function testBadPath()
+    {
+        $parser = new PathParser("default", "php");
+        $parser->parse('@namespace');
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\PathException
+     */
+    public function testEmptyPath()
+    {
+        $parser = new PathParser("default", "php");
+        $parser->parse("");
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\PathException
+     */
+    public function testInvalidPath()
+    {
+        $parser = new PathParser("default", "php");
+        $parser->parse("hello\0");
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\PathException
+     */
+    public function testExternalPath()
+    {
+        $parser = new PathParser("default", "php");
+        $parser->parse('../../../index.php');
     }
 
     public function testLoad()
