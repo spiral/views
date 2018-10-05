@@ -38,6 +38,18 @@ class LoaderTest extends TestCase
         $loader->list();
     }
 
+    /**
+     * @expectedException \Spiral\Views\Exception\LoaderException
+     */
+    public function testLoadException()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default'
+        ]);
+
+        $loader->load('view');
+    }
+
     public function testExists()
     {
         $loader = new ViewLoader(new Files(), [
@@ -82,5 +94,37 @@ class LoaderTest extends TestCase
         $this->assertContains('default:inner/view', $files);
         $this->assertContains('default:inner/partial/view', $files);
         $this->assertNotContains('default:inner/file', $files);
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\LoaderException
+     */
+    public function testLoadNotFound()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default'
+        ]);
+
+        $loader = $loader->withExtension('php');
+
+        $loader->load('inner/file');
+    }
+
+    public function testLoad()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default'
+        ]);
+
+        $loader = $loader->withExtension('php');
+
+        $source = $loader->load('inner/partial/view');
+        $this->assertNotNull($source);
+
+        $this->assertSame('inner/partial/view', $source->getName());
+        $this->assertSame('default', $source->getNamespace());
+        $this->assertFileExists($source->getFilename());
+
+        $this->assertSame('hello inner partial world', $source->getCode());
     }
 }
