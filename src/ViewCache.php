@@ -29,6 +29,18 @@ final class ViewCache
     }
 
     /**
+     * Reset view cache from all the contexts.
+     *
+     * @param string $path
+     */
+    public function resetPath(string $path)
+    {
+        foreach ($this->cache as &$cache) {
+            unset($cache[$path], $cache);
+        }
+    }
+
+    /**
      * @param ContextInterface $context
      * @param string           $path
      * @return bool
