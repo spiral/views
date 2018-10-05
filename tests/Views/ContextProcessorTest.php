@@ -11,9 +11,10 @@ namespace Spiral\Views;
 use PHPUnit\Framework\TestCase;
 use Spiral\Files\Files;
 use Spiral\Views\Context\ValueDependency;
+use Spiral\Views\Processor\ContextProcessor;
 use Spiral\Views\Traits\ProcessorTrait;
 
-class ContextProcessor extends TestCase
+class ContextProcessorTest extends TestCase
 {
     use ProcessorTrait;
 
@@ -26,13 +27,23 @@ class ContextProcessor extends TestCase
         $this->assertSame('hello @{name|default}', $source->getCode());
 
         $ctx = new ViewContext();
-        $source2 = $this->process($source, $ctx);
+        $source2 = $this->process($source, $ctx->withDependency(new ValueDependency('name', 'Bobby')));
+        $this->assertSame('hello Bobby', $source2->getCode());
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\ContextException
+     */
+    public function testProcessContextException()
+    {
+        $this->processors[] = new ContextProcessor();
+
+        $source = $this->getSource('other:inject');
 
         $this->assertSame('hello @{name|default}', $source->getCode());
-        $this->assertSame('hello default', $source2->getCode());
 
-        $source3 = $this->process($source, $ctx->withDependency(new ValueDependency('name', 'Bobby')));
-        $this->assertSame('hello Bobby', $source2->getCode());
+        $ctx = new ViewContext();
+        $this->process($source, $ctx);
     }
 
     protected function getSource(string $path): ViewSource
@@ -42,6 +53,6 @@ class ContextProcessor extends TestCase
             'other'   => __DIR__ . '/../fixtures/other',
         ]);
 
-        return $loader->load($path);
+        return $loader->withExtension('php')->load($path);
     }
 }

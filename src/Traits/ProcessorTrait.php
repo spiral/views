@@ -15,7 +15,7 @@ use Spiral\Views\ViewSource;
 trait ProcessorTrait
 {
     /** @var ProcessorInterface[] */
-    private $processors;
+    private $processors = [];
 
     /**
      * Process given view source using set of associated processors.
@@ -27,7 +27,7 @@ trait ProcessorTrait
     private function process(ViewSource $source, ContextInterface $context): ViewSource
     {
         foreach ($this->processors as $processor) {
-            $source = $source->withCode($processor->process($source, $context));
+            $source = $processor->process($source, $context);
         }
 
         return $source;
