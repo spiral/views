@@ -73,4 +73,42 @@ class NativeTest extends TestCase
 
         $view->render([]);
     }
+
+    public function testRenderBufferWithValue()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default',
+            'other'   => __DIR__ . '/../fixtures/other',
+
+        ]);
+
+        $loader = $loader->withExtension('php');
+
+        $engine = new NativeEngine(new Container());
+        $engine = $engine->withLoader($loader);
+
+        $view = $engine->get('other:buf', $ctx = new ViewContext());
+        $this->assertSame('', $view->render(['value' => 'hello']));
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\RenderException
+     */
+    public function testRenderBufferException()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default',
+            'other'   => __DIR__ . '/../fixtures/other',
+
+        ]);
+
+        $loader = $loader->withExtension('php');
+
+        $engine = new NativeEngine(new Container());
+        $engine = $engine->withLoader($loader);
+
+        $view = $engine->get('other:buf', $ctx = new ViewContext());
+
+        $view->render([]);
+    }
 }

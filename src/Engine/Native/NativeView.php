@@ -53,7 +53,10 @@ class NativeView implements ViewInterface
                 require $this->view->getFilename();
             });
         } catch (\Throwable $e) {
-            ob_end_clean();
+            while (ob_get_level() >= $__outputLevel__) {
+                ob_end_clean();
+            }
+
             throw new RenderException($e);
         } finally {
             //Closing all nested buffers

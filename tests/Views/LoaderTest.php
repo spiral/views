@@ -188,7 +188,7 @@ class LoaderTest extends TestCase
         $this->assertContains('other:view', $files);
 
         $files = $loader->list('other');
-        $this->assertCount(2, $files);
+        $this->assertCount(3, $files);
         $this->assertContains('other:view', $files);
     }
 }
