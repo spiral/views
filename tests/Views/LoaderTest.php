@@ -132,4 +132,26 @@ class LoaderTest extends TestCase
         $this->assertSame('new code', $newSource->getCode());
         $this->assertSame('hello inner partial world', $source->getCode());
     }
+
+    public function testMultipleNamespaces()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default',
+            'other'   => __DIR__ . '/../fixtures/other',
+
+        ]);
+
+        $loader = $loader->withExtension('php');
+
+        $this->assertTrue($loader->exists('other:view'));
+        $this->assertFalse($loader->exists('non-existed:view'));
+
+        $files = $loader->list();
+        $this->assertContains('default:view', $files);
+        $this->assertContains('other:view', $files);
+
+        $files = $loader->list('other');
+        $this->assertCount(1, $files);
+        $this->assertContains('other:view', $files);
+    }
 }
