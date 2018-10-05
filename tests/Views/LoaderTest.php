@@ -47,6 +47,8 @@ class LoaderTest extends TestCase
         $loader = $loader->withExtension('php');
 
         $this->assertFalse($loader->exists("another"));
+        $this->assertFalse($loader->exists("inner/file.twig"));
+        $this->assertFalse($loader->exists("inner/file"));
 
         $this->assertTrue($loader->exists("view"));
         $this->assertTrue($loader->exists("inner/view"));
@@ -65,5 +67,20 @@ class LoaderTest extends TestCase
 
         $this->assertTrue($loader->exists("@default/inner/partial/view"));
         $this->assertTrue($loader->exists("@default/inner/partial/view.php"));
+    }
+
+    public function testList()
+    {
+        $loader = new ViewLoader(new Files(), [
+            'default' => __DIR__ . '/../fixtures/default'
+        ]);
+
+        $loader = $loader->withExtension('php');
+        $files = $loader->list();
+
+        $this->assertContains('default:view', $files);
+        $this->assertContains('default:inner/view', $files);
+        $this->assertContains('default:inner/partial/view', $files);
+        $this->assertNotContains('default:inner/file', $files);
     }
 }
