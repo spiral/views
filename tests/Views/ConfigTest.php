@@ -17,13 +17,13 @@ class ConfigTest extends TestCase
     public function testCache()
     {
         $config = new ViewsConfig([
-            'config' => [
+            'cache' => [
                 'enable'    => true,
                 'directory' => '/tmp'
             ]
         ]);
 
         $this->assertTrue($config->cacheEnabled());
-        $this->assertSame('/tmp', $config->cacheDirectory());
+        $this->assertSame('/tmp/', $config->cacheDirectory());
     }
 }

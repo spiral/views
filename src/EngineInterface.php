@@ -9,6 +9,7 @@
 namespace Spiral\Views;
 
 use Spiral\Views\Exception\EngineException;
+use Spiral\Views\Exception\LoaderException;
 
 interface EngineInterface
 {
@@ -28,6 +29,7 @@ interface EngineInterface
      * @param ContextInterface $context
      *
      * @throws EngineException
+     * @throws LoaderException
      */
     public function compile(string $path, ContextInterface $context);
 
@@ -40,6 +42,7 @@ interface EngineInterface
      * @return ViewInterface
      *
      * @throws EngineException
+     * @throws LoaderException
      */
     public function get(string $path, ContextInterface $context): ViewInterface;
 }

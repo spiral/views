@@ -11,13 +11,11 @@ namespace Spiral\Views\Engine\Native;
 use Psr\Container\ContainerInterface;
 use Spiral\Views\ContextInterface;
 use Spiral\Views\Engine\AbstractEngine;
-use Spiral\Views\Exception\EngineException;
-use Spiral\Views\Exception\LoaderException;
 use Spiral\Views\ViewInterface;
 
 class NativeEngine extends AbstractEngine
 {
-    const EXTENSIONS = ['php'];
+    protected const EXTENSION = 'php';
 
     /** @var ContainerInterface */
     private $container;
@@ -43,10 +41,6 @@ class NativeEngine extends AbstractEngine
      */
     public function get(string $path, ContextInterface $context): ViewInterface
     {
-        try {
-            return new NativeView($this->loader->load($path), $context, $this->container);
-        } catch (LoaderException $e) {
-            throw new EngineException($e->getMessage(), $e->getCode(), $e);
-        }
+        return new NativeView($this->loader->load($path), $this->container, $context);
     }
 }
