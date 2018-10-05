@@ -33,7 +33,38 @@ class CacheTest extends TestCase
         $this->assertSame($view, $cache->get($ctx, 'default:view'));
     }
 
+    /**
+     * @expectedException \Spiral\Views\Exception\CacheException
+     */
+    public function testGet()
+    {
+        $cache = new ViewCache();
+        $cache->get(new ViewContext(), 'default:view');
+    }
+
     public function testReset()
+    {
+        $ctx = new ViewContext();
+        $ctx2 = $ctx->withDependency(new ValueDependency('test', 'value'));
+
+        $cache = new ViewCache();
+
+        $view = $this->getView($ctx, 'default:view');
+        $view2 = $this->getView($ctx2, 'other:view');
+
+        $cache->set($ctx, 'default:view', $view);
+        $cache->set($ctx2, 'other:view', $view2);
+
+        $this->assertTrue($cache->has($ctx, 'default:view'));
+        $this->assertTrue($cache->has($ctx2, 'other:view'));
+
+        $cache->reset($ctx);
+
+        $this->assertFalse($cache->has($ctx, 'default:view'));
+        $this->assertTrue($cache->has($ctx2, 'other:view'));
+    }
+
+    public function testResetAll()
     {
         $ctx = new ViewContext();
         $cache = new ViewCache();
@@ -47,7 +78,7 @@ class CacheTest extends TestCase
         $this->assertTrue($cache->has($ctx, 'default:view'));
         $this->assertTrue($cache->has($ctx, 'other:view'));
 
-        $cache->reset($ctx);
+        $cache->reset();
 
         $this->assertFalse($cache->has($ctx, 'default:view'));
         $this->assertFalse($cache->has($ctx, 'other:view'));
