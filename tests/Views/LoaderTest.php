@@ -126,5 +126,10 @@ class LoaderTest extends TestCase
         $this->assertFileExists($source->getFilename());
 
         $this->assertSame('hello inner partial world', $source->getCode());
+
+        $newSource = $source->withCode('new code');
+
+        $this->assertSame('new code', $newSource->getCode());
+        $this->assertSame('hello inner partial world', $source->getCode());
     }
 }
