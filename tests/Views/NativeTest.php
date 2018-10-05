@@ -34,7 +34,6 @@ class NativeTest extends TestCase
         $view = $engine->get('other:view', $ctx = new ViewContext());
 
         $this->assertSame('other world', $view->render([]));
-        $this->assertSame($ctx, $view->getContext());
     }
 
     public function testRenderWithValue()

@@ -13,13 +13,6 @@ use Spiral\Views\Exception\RenderException;
 interface ViewInterface
 {
     /**
-     * Context associated with view object.
-     *
-     * @return ContextInterface
-     */
-    public function getContext(): ContextInterface;
-
-    /**
      * Render view source using internal logic.
      *
      * @param array $data

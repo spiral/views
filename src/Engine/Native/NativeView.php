@@ -41,14 +41,6 @@ class NativeView implements ViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getContext(): ContextInterface
-    {
-        return $this->context;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function render(array $data = []): string
     {
         ob_start();
