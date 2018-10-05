@@ -10,11 +10,15 @@ namespace Spiral\Views;
 
 
 use Spiral\Views\Exception\LoaderException;
+use Spiral\Views\Exception\PathException;
 
 interface LoaderInterface
 {
     // Namespace/viewName separator.
-    const NS_SEPARATOR = ':';
+    public const NS_SEPARATOR = ':';
+
+    // Default view namespace
+    public const DEFAULT_NAMESPACE = "default";
 
     /**
      * Lock loader to specific file extension.
@@ -29,6 +33,8 @@ interface LoaderInterface
      *
      * @param string $path
      * @return bool
+     *
+     * @throws PathException
      */
     public function exists(string $path): bool;
 
@@ -39,6 +45,7 @@ interface LoaderInterface
      * @return ViewSource
      *
      * @throws LoaderException
+     * @throws PathException
      */
     public function load(string $path): ViewSource;
 
@@ -48,6 +55,8 @@ interface LoaderInterface
      *
      * @param string|null $namespace
      * @return array
+     *
+     * @throws LoaderException
      */
     public function list(string $namespace = null): array;
 }
