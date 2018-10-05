@@ -11,6 +11,7 @@ namespace Spiral\Views\Tests;
 use PHPUnit\Framework\TestCase;
 use Spiral\Core\Container;
 use Spiral\Files\Files;
+use Spiral\Views\Context\ValueDependency;
 use Spiral\Views\ContextInterface;
 use Spiral\Views\Engine\Native\NativeEngine;
 use Spiral\Views\ViewCache;
@@ -30,6 +31,65 @@ class CacheTest extends TestCase
         $cache->set($ctx, 'default:view', $view);
         $this->assertTrue($cache->has($ctx, 'default:view'));
         $this->assertSame($view, $cache->get($ctx, 'default:view'));
+    }
+
+    public function testReset()
+    {
+        $ctx = new ViewContext();
+        $cache = new ViewCache();
+
+        $view = $this->getView($ctx, 'default:view');
+        $view2 = $this->getView($ctx, 'other:view');
+
+        $cache->set($ctx, 'default:view', $view);
+        $cache->set($ctx, 'other:view', $view2);
+
+        $this->assertTrue($cache->has($ctx, 'default:view'));
+        $this->assertTrue($cache->has($ctx, 'other:view'));
+
+        $cache->reset($ctx);
+
+        $this->assertFalse($cache->has($ctx, 'default:view'));
+        $this->assertFalse($cache->has($ctx, 'other:view'));
+    }
+
+    public function testResetPath()
+    {
+        $ctx = new ViewContext();
+        $cache = new ViewCache();
+
+        $view = $this->getView($ctx, 'default:view');
+        $view2 = $this->getView($ctx, 'other:view');
+
+        $cache->set($ctx, 'default:view', $view);
+        $cache->set($ctx, 'other:view', $view2);
+
+        $this->assertTrue($cache->has($ctx, 'default:view'));
+        $this->assertTrue($cache->has($ctx, 'other:view'));
+
+        $cache->resetPath('other:view');
+
+        $this->assertTrue($cache->has($ctx, 'default:view'));
+        $this->assertFalse($cache->has($ctx, 'other:view'));
+    }
+
+    public function testContextValue()
+    {
+        $ctx = new ViewContext();
+        $ctx = $ctx->withDependency(new ValueDependency('test', 'value'));
+
+        $cache = new ViewCache();
+
+        $view = $this->getView($ctx, 'default:view');
+
+        $cache->set($ctx, 'default:view', $view);
+        $this->assertTrue($cache->has($ctx, 'default:view'));
+
+        $ctx = $ctx->withDependency(new ValueDependency('test', 'another'));
+        $this->assertFalse($cache->has($ctx, 'default:view'));
+
+        $ctx = $ctx->withDependency(new ValueDependency('test', 'value'));
+        $this->assertTrue($cache->has($ctx, 'default:view'));
     }
 
     protected function getView(ContextInterface $context, string $path): ViewInterface
