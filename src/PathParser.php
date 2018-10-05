@@ -12,6 +12,7 @@ namespace Spiral\Views;
 class PathParser
 {
     const NS_SEPARATOR = LoaderInterface::NS_SEPARATOR;
+
     private $defaultNamespace;
     private $extension;
 

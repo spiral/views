@@ -74,7 +74,6 @@ final class ViewSource
      */
     public function getCode(): string
     {
-        //Expecting local stream
         return $this->code ?? file_get_contents($this->getFilename());
     }
 
