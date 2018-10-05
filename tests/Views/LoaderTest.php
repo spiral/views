@@ -46,10 +46,11 @@ class LoaderTest extends TestCase
 
         $loader = $loader->withExtension('php');
 
+        $this->assertFalse($loader->exists("another"));
+
         $this->assertTrue($loader->exists("view"));
         $this->assertTrue($loader->exists("inner/view"));
         $this->assertTrue($loader->exists("inner/partial/view"));
-        $this->assertFalse($loader->exists("another"));
 
         $this->assertTrue($loader->exists("view.php"));
 
