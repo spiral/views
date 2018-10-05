@@ -1,0 +1,63 @@
+<?php
+/**
+ * Spiral Framework.
+ *
+ * @license   MIT
+ * @author    Anton Titov (Wolfy-J)
+ */
+
+namespace Spiral\Views\Tests;
+
+use PHPUnit\Framework\TestCase;
+use Spiral\Views\Context\ValueDependency;
+use Spiral\Views\ContextGenerator;
+use Spiral\Views\ViewContext;
+
+class GeneratorTest extends TestCase
+{
+    public function testRotateSingleValue()
+    {
+        $context = new ViewContext();
+        $context = $context->withDependency(new ValueDependency("test", "value"));
+
+        $generator = new ContextGenerator($context);
+        $variants = $generator->generate();
+
+        $this->assertCount(1, $variants);
+        $this->assertSame($context->getID(), $variants[0]->getID());
+        $this->assertSame("value", $variants[0]->resolveValue("test"));
+    }
+
+    public function testRotateMultiValue()
+    {
+        $context = new ViewContext();
+        $context = $context->withDependency(new ValueDependency("test", "value", ["value", "another"]));
+
+        $generator = new ContextGenerator($context);
+        $variants = $generator->generate();
+
+        $this->assertCount(2, $variants);
+        $this->assertSame($context->getID(), $variants[0]->getID());
+        $this->assertSame("value", $variants[0]->resolveValue("test"));
+        $this->assertSame("another", $variants[1]->resolveValue("test"));
+    }
+
+    public function testRotateMultiple()
+    {
+        $context = new ViewContext();
+        $context = $context->withDependency(new ValueDependency("a", "a", ["a", "b"]));
+        $context = $context->withDependency(new ValueDependency("b", "c", ["c", "e"]));
+        $context = $context->withDependency(new ValueDependency("d", "f", ["f", "g"]));
+
+        $generator = new ContextGenerator($context);
+        $variants = $generator->generate();
+
+        $this->assertCount(8, $variants);
+        $this->assertSame($context->getID(), $variants[0]->getID());
+
+        // ending
+        $this->assertSame("b", $variants[7]->resolveValue("a"));
+        $this->assertSame("e", $variants[7]->resolveValue("b"));
+        $this->assertSame("g", $variants[7]->resolveValue("d"));
+    }
+}

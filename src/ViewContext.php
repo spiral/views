@@ -8,7 +8,6 @@
 
 namespace Spiral\Views;
 
-use Psr\Container\ContainerInterface;
 use Spiral\Views\Exception\ContextException;
 
 /**
@@ -19,19 +18,8 @@ use Spiral\Views\Exception\ContextException;
  */
 final class ViewContext implements ContextInterface
 {
-    /** @var array */
+    /** @var DependencyInterface[] */
     private $dependencies = [];
-
-    /** @var ContainerInterface */
-    private $container = null;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * {@inheritdoc}
@@ -39,24 +27,28 @@ final class ViewContext implements ContextInterface
     public function getID(): string
     {
         $calculated = '';
-        foreach ($this->dependencies as $dependency => $source) {
-            $calculated .= "[{$dependency}={$this->resolveValue($dependency)}]";
+        foreach ($this->dependencies as $dependency) {
+            $calculated .= "[{$dependency->getName()}={$dependency->getValue()}]";
         }
 
         return md5($calculated);
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * You can add dependency to a function, closure, or callable pair where first argument is
-     * binding name (resolved thought container).
+     * @return array
      */
-    // todo: dependency interface
-    public function withDependency(string $dependency, callable $source): ContextInterface
+    public function getDependencies(): array
+    {
+        return array_values($this->dependencies);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withDependency(DependencyInterface $dependency): ContextInterface
     {
         $environment = clone $this;
-        $environment->dependencies[$dependency] = $source;
+        $environment->dependencies[$dependency->getName()] = $dependency;
 
         return $environment;
     }
@@ -70,14 +62,6 @@ final class ViewContext implements ContextInterface
             throw new ContextException("Undefined context dependency '{$dependency}'.");
         }
 
-        $source = $this->dependencies[$dependency];
-
-        //Let's resolve using container
-        if (is_array($source) && is_string($source[0])) {
-            $source[0] = $this->container->get($source[0]);
-            $this->dependencies[$dependency] = $source;
-        }
-
-        return call_user_func($source);
+        return $this->dependencies[$dependency]->getValue();
     }
 }

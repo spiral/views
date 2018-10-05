@@ -19,18 +19,22 @@ interface ContextInterface
      */
     public function getID(): string;
 
-    // todo: change the concept? use unidirectional generators?
+    /**
+     * Get all associated dependencies.
+     *
+     * @return DependencyInterface[]
+     */
+    public function getDependencies(): array;
 
     /**
-     * Create environment with new binded dependency. Must not affect existed context dependencies.
+     * Create environment with new variable dependency.
      *
-     * @param string   $dependency
-     * @param callable $source
+     * @param DependencyInterface $dependency
      * @return ContextInterface
      *
      * @throws ContextException
      */
-    public function withDependency(string $dependency, callable $source): ContextInterface;
+    public function withDependency(DependencyInterface $dependency): ContextInterface;
 
     /**
      * Get calculated dependency value.
