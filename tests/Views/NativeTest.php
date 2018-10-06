@@ -29,10 +29,20 @@ class NativeTest extends TestCase
         $engine = new NativeEngine(new Container());
         $engine = $engine->withLoader($loader);
 
+        $engine->reset('other:view', new ViewContext());
         $engine->compile('other:view', new ViewContext());
         $view = $engine->get('other:view', $ctx = new ViewContext());
 
         $this->assertSame('other world', $view->render([]));
+    }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\EngineException
+     */
+    public function testGetNoLoader()
+    {
+        $engine = new NativeEngine(new Container());
+        $engine->get('other:view', new ViewContext());
     }
 
     public function testRenderWithValue()

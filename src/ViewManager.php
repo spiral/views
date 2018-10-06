@@ -101,6 +101,7 @@ class ViewManager implements ViewsInterface
 
         $engine = $this->findEngine($path);
         if (!empty($context)) {
+            $engine->reset($path, $context);
             $engine->compile($path, $context);
 
             return;
@@ -109,12 +110,13 @@ class ViewManager implements ViewsInterface
         // Rotate all possible context variants and warm up cache
         $generator = new ContextGenerator($this->context);
         foreach ($generator->generate() as $context) {
+            $engine->reset($path, $context);
             $engine->compile($path, $context);
         }
     }
 
     /**
-     * Reset view cache for a given path.
+     * Reset view cache for a given path. Identical to compile method by effect but faster.
      *
      * @param string                $path
      * @param ContextInterface|null $context
