@@ -19,7 +19,7 @@ class NativeTest extends TestCase
 {
     public function testGet()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
         ]);
@@ -47,7 +47,7 @@ class NativeTest extends TestCase
 
     public function testRenderWithValue()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
 
@@ -67,7 +67,7 @@ class NativeTest extends TestCase
      */
     public function testRenderException()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
 
@@ -85,7 +85,7 @@ class NativeTest extends TestCase
 
     public function testRenderBufferWithValue()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
 
@@ -105,7 +105,7 @@ class NativeTest extends TestCase
      */
     public function testRenderBufferException()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
 

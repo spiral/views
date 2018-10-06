@@ -9,7 +9,6 @@
 namespace Spiral\Views\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Spiral\Files\Files;
 use Spiral\Views\Loader\PathParser;
 use Spiral\Views\ViewLoader;
 
@@ -20,7 +19,7 @@ class LoaderTest extends TestCase
      */
     public function testExistsException()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -32,7 +31,7 @@ class LoaderTest extends TestCase
      */
     public function testListException()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -44,7 +43,7 @@ class LoaderTest extends TestCase
      */
     public function testLoadException()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -53,7 +52,7 @@ class LoaderTest extends TestCase
 
     public function testExists()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -84,7 +83,7 @@ class LoaderTest extends TestCase
 
     public function testList()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -102,7 +101,7 @@ class LoaderTest extends TestCase
      */
     public function testLoadNotFound()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -149,7 +148,7 @@ class LoaderTest extends TestCase
 
     public function testLoad()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
@@ -172,7 +171,7 @@ class LoaderTest extends TestCase
 
     public function testMultipleNamespaces()
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
 

@@ -66,6 +66,14 @@ class ViewManager implements ViewsInterface
     }
 
     /**
+     * @return ContextInterface
+     */
+    public function getContext(): ContextInterface
+    {
+        return $this->context;
+    }
+
+    /**
      * Attach new view engine.
      *
      * @param EngineInterface $engine
@@ -88,24 +96,17 @@ class ViewManager implements ViewsInterface
     /**
      * Compile one of multiple cache versions for a given view path.
      *
-     * @param string                $path
-     * @param ContextInterface|null $context
+     * @param string $path
      *
      * @throws ViewException
      */
-    public function compile(string $path, ContextInterface $context = null)
+    public function compile(string $path)
     {
         if (!empty($this->cache)) {
             $this->cache->resetPath($path);
         }
 
         $engine = $this->findEngine($path);
-        if (!empty($context)) {
-            $engine->reset($path, $context);
-            $engine->compile($path, $context);
-
-            return;
-        }
 
         // Rotate all possible context variants and warm up cache
         $generator = new ContextGenerator($this->context);
@@ -118,21 +119,15 @@ class ViewManager implements ViewsInterface
     /**
      * Reset view cache for a given path. Identical to compile method by effect but faster.
      *
-     * @param string                $path
-     * @param ContextInterface|null $context
+     * @param string $path
      */
-    public function reset(string $path, ContextInterface $context = null)
+    public function reset(string $path)
     {
         if (!empty($this->cache)) {
             $this->cache->resetPath($path);
         }
 
         $engine = $this->findEngine($path);
-        if (!empty($context)) {
-            $engine->reset($path, $context);
-
-            return;
-        }
 
         // Rotate all possible context variants and warm up cache
         $generator = new ContextGenerator($this->context);

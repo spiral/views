@@ -48,7 +48,7 @@ class ContextProcessorTest extends TestCase
 
     protected function getSource(string $path): ViewSource
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
         ]);

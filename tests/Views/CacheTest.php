@@ -127,7 +127,7 @@ class CacheTest extends TestCase
 
     protected function getView(ContextInterface $context, string $path): ViewInterface
     {
-        $loader = new ViewLoader(new Files(), [
+        $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
         ]);

@@ -8,6 +8,7 @@
 
 namespace Spiral\Views;
 
+use Spiral\Files\Files;
 use Spiral\Files\FilesInterface;
 use Spiral\Views\Exception\LoaderException;
 use Spiral\Views\Loader\PathParser;
@@ -31,17 +32,17 @@ class ViewLoader implements LoaderInterface
     private $defaultNamespace = self::DEFAULT_NAMESPACE;
 
     /**
-     * @param FilesInterface $files
      * @param array          $namespaces
+     * @param FilesInterface $files
      * @param string         $defaultNamespace
      */
     public function __construct(
-        FilesInterface $files,
         array $namespaces,
+        FilesInterface $files = null,
         string $defaultNamespace = self::DEFAULT_NAMESPACE
     ) {
-        $this->files = $files;
         $this->namespaces = $namespaces;
+        $this->files = $files ?? new Files();
         $this->defaultNamespace = $defaultNamespace;
     }
 
