@@ -13,5 +13,7 @@ use Spiral\Views\Engine\AbstractEngine;
 
 class TwigEngine extends AbstractEngine
 {
-    const EXTENSION = ['twig'];
+    const EXTENSION = 'twig';
+
+
 }

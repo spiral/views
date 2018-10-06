@@ -22,8 +22,16 @@ interface EngineInterface
     public function withLoader(LoaderInterface $loader): EngineInterface;
 
     /**
-     * Compile (and reset cache) for the given view path in a provided context. This method must be called
-     * each time view must be re-compiled.
+     * Get currently associated engine loader.
+     *
+     * @return LoaderInterface
+     * @throws EngineException
+     */
+    public function getLoader(): LoaderInterface;
+
+    /**
+     * Compile (and reset cache) for the given view path in a provided context. This method must be
+     * called each time view must be re-compiled.
      *
      * @param string           $path
      * @param ContextInterface $context
@@ -34,8 +42,9 @@ interface EngineInterface
     public function compile(string $path, ContextInterface $context);
 
     /**
-     * Get instance of view class associated with view path (path can include namespace). Engine must attempt
-     * to use existed cache if such presented (or compile view directly if cache has been disabled).
+     * Get instance of view class associated with view path (path can include namespace). Engine
+     * must attempt to use existed cache if such presented (or compile view directly if cache has
+     * been disabled).
      *
      * @param string           $path
      * @param ContextInterface $context

@@ -21,14 +21,14 @@ class ViewLoader implements LoaderInterface
     /** @var FilesInterface */
     private $files;
 
+    /** @var PathParser|null */
+    private $parser = null;
+
     /** @var array */
     private $namespaces = [];
 
     /** @var string */
     private $defaultNamespace = self::DEFAULT_NAMESPACE;
-
-    /** @var PathParser */
-    private $parser;
 
     /**
      * @param FilesInterface $files
@@ -81,6 +81,7 @@ class ViewLoader implements LoaderInterface
             $directory = $this->files->normalizePath($directory, true);
             if ($this->files->exists(sprintf("%s%s", $directory, $parsed->getBasename()))) {
                 $filename = sprintf("%s%s", $directory, $parsed->getBasename());
+
                 return true;
             }
         }
@@ -124,7 +125,8 @@ class ViewLoader implements LoaderInterface
                         continue;
                     }
 
-                    $name = $this->parser->fetchName($this->files->relativePath($filename, $directory));
+                    $name = $this->parser->fetchName($this->files->relativePath($filename,
+                        $directory));
                     $result[] = sprintf("%s%s%s", $ns, self::NS_SEPARATOR, $name);
                 }
             }

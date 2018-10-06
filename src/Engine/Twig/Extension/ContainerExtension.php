@@ -10,6 +10,7 @@ namespace Spiral\Views\Engine\Twig\Extension;
 
 use Psr\Container\ContainerInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Provides access to container bindings using `get` alias.
@@ -32,7 +33,7 @@ class ContainerExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return [new \Twig_SimpleFunction('get', [$this->container, 'get'])];
+        return [new TwigFunction('get', [$this->container, 'get'])];
     }
 
     /**
