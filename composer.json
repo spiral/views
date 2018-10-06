@@ -1,7 +1,7 @@
 {
   "name": "spiral/views",
   "type": "library",
-  "description": "View Manages and Rendering Engine selector",
+  "description": "View Manager and Rendering Engine selector",
   "license": "MIT",
   "authors": [
     {

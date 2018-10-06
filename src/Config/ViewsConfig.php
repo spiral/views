@@ -10,6 +10,7 @@ namespace Spiral\Views\Config;
 
 use Spiral\Core\Container\Autowire;
 use Spiral\Core\InjectableConfig;
+use Spiral\Views\Engine\Native\NativeEngine;
 use Spiral\Views\Exception\ConfigException;
 
 class ViewsConfig extends InjectableConfig
@@ -25,7 +26,9 @@ class ViewsConfig extends InjectableConfig
         ],
         'namespaces'   => [],
         'dependencies' => [],
-        'engines'      => []
+        'engines'      => [
+            NativeEngine::class
+        ]
     ];
 
     /**

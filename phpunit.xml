@@ -11,7 +11,7 @@
          stopOnFailure="false"
          stopOnError="false">
     <testsuites>
-        <testsuite name="View Manages and Rendering Engine selector">
+        <testsuite name="View Manager and Rendering Engine selector">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
