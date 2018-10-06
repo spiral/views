@@ -87,4 +87,20 @@ class ConfigTest extends TestCase
             $config->getDependencies()[0]->resolve($container)
         );
     }
+
+    /**
+     * @expectedException \Spiral\Views\Exception\ConfigException
+     */
+    public function testDependenciesError()
+    {
+        $container = new Container();
+
+        $config = new ViewsConfig([
+            'dependencies' => [
+                $this
+            ]
+        ]);
+
+        $config->getDependencies();
+    }
 }
