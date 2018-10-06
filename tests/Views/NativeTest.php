@@ -22,7 +22,6 @@ class NativeTest extends TestCase
         $loader = new ViewLoader(new Files(), [
             'default' => __DIR__ . '/../fixtures/default',
             'other'   => __DIR__ . '/../fixtures/other',
-
         ]);
 
         $loader = $loader->withExtension('php');

@@ -39,6 +39,14 @@ class NativeEngine extends AbstractEngine
     /**
      * @inheritdoc
      */
+    public function reset(string $path, ContextInterface $context)
+    {
+        // doing nothing, native views can not be compiled
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function get(string $path, ContextInterface $context): ViewInterface
     {
         return new NativeView($this->getLoader()->load($path), $this->container, $context);
