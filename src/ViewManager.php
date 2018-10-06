@@ -9,10 +9,15 @@
 namespace Spiral\Views;
 
 
+use Spiral\Core\FactoryInterface;
+use Spiral\Views\Config\ViewsConfig;
 use Spiral\Views\Exception\ViewException;
 
-class ViewManager
+class ViewManager implements ViewsInterface
 {
+    /** @var ViewsConfig */
+    private $config;
+
     /** @var ViewContext */
     private $context;
 
@@ -26,14 +31,28 @@ class ViewManager
     private $engines;
 
     /**
-     * @param LoaderInterface $loader
-     * @param ViewCache|null  $cache
+     * @param ViewsConfig      $config
+     * @param FactoryInterface $factory
      */
-    public function __construct(LoaderInterface $loader, ViewCache $cache = null)
+    public function __construct(ViewsConfig $config, FactoryInterface $factory)
     {
+        $this->config = $config;
         $this->context = new ViewContext();
-        $this->loader = $loader;
-        $this->cache = $cache;
+        $this->loader = $factory->make(ViewLoader::class, [
+            'namespaces' => $config->getNamespaces()
+        ]);
+
+        foreach ($this->config->getDependencies() as $dependency) {
+            $this->addDependency($dependency->resolve($factory));
+        }
+
+        foreach ($this->config->getEngines() as $engine) {
+            $this->addEngine($engine->resolve($factory));
+        }
+
+        if ($this->config->cacheInMemory()) {
+            $this->cache = new ViewCache();
+        }
     }
 
     /**
@@ -80,7 +99,7 @@ class ViewManager
             $this->cache->resetPath($path);
         }
 
-        $engine = $this->detectEngine($path);
+        $engine = $this->findEngine($path);
         if (!empty($context)) {
             $engine->compile($path, $context);
 
@@ -91,6 +110,32 @@ class ViewManager
         $generator = new ContextGenerator($this->context);
         foreach ($generator->generate() as $context) {
             $engine->compile($path, $context);
+        }
+    }
+
+    /**
+     * Reset view cache for a given path.
+     *
+     * @param string                $path
+     * @param ContextInterface|null $context
+     */
+    public function reset(string $path, ContextInterface $context = null)
+    {
+        if (!empty($this->cache)) {
+            $this->cache->resetPath($path);
+        }
+
+        $engine = $this->findEngine($path);
+        if (!empty($context)) {
+            $engine->reset($path, $context);
+
+            return;
+        }
+
+        // Rotate all possible context variants and warm up cache
+        $generator = new ContextGenerator($this->context);
+        foreach ($generator->generate() as $context) {
+            $engine->reset($path, $context);
         }
     }
 
@@ -108,7 +153,7 @@ class ViewManager
             return $this->cache->get($this->context, $path);
         }
 
-        $view = $this->detectEngine($path)->get($path, $this->context);
+        $view = $this->findEngine($path)->get($path, $this->context);
 
         if (!empty($this->cache)) {
             $this->cache->set($this->context, $path, $view);
@@ -135,7 +180,7 @@ class ViewManager
      *
      * @throws ViewException
      */
-    protected function detectEngine(string $path): EngineInterface
+    protected function findEngine(string $path): EngineInterface
     {
         foreach ($this->engines as $engine) {
             if ($engine->getLoader()->exists($path)) {
