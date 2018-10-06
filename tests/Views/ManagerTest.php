@@ -31,6 +31,18 @@ class ManagerTest extends TestCase
         $this->assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
     }
 
+    public function testGet()
+    {
+        $manager = $this->makeManager();
+        $manager->addDependency(new ValueDependency('name', 'hello'));
+
+        $view = $manager->get('other:var');
+        $this->assertSame($view, $manager->get('other:var'));
+
+        $manager->reset('other:var');
+        $this->assertNotSame($view, $manager->get('other:var'));
+    }
+
     public function testCompile()
     {
         $manager = $this->makeManager();
