@@ -21,7 +21,6 @@ class ViewsConfig extends InjectableConfig
     protected $config = [
         'cache'        => [
             'enable'    => false,
-            'memory'    => false,
             'directory' => '/tmp'
         ],
         'namespaces'   => [],
@@ -37,16 +36,6 @@ class ViewsConfig extends InjectableConfig
     public function cacheEnabled(): bool
     {
         return !empty($this->config['cache']['enable']) || !empty($this->config['cache']['enabled']);
-    }
-
-    /**
-     * Enable in memory cache.
-     *
-     * @return bool
-     */
-    public function cacheInMemory(): bool
-    {
-        return !empty($this->config['cache']['memory']);
     }
 
     /**

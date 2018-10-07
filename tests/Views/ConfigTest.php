@@ -22,13 +22,11 @@ class ConfigTest extends TestCase
         $config = new ViewsConfig([
             'cache' => [
                 'enable'    => true,
-                'memory'    => true,
                 'directory' => '/tmp'
             ]
         ]);
 
         $this->assertTrue($config->cacheEnabled());
-        $this->assertTrue($config->cacheInMemory());
         $this->assertSame('/tmp/', $config->cacheDirectory());
     }
 

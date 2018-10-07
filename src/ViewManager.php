@@ -50,7 +50,7 @@ class ViewManager implements ViewsInterface
             $this->addEngine($engine->resolve($factory));
         }
 
-        if ($this->config->cacheInMemory()) {
+        if ($this->config->cacheEnabled()) {
             $this->cache = new ViewCache();
         }
     }
