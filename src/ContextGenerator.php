@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Spiral Framework.
  *
@@ -44,6 +45,7 @@ final class ContextGenerator
      *
      * @param ContextInterface      $context
      * @param DependencyInterface[] $dependencies
+     *
      * @return ContextInterface[]
      */
     private function rotate(ContextInterface $context, array $dependencies): array
