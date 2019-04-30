@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Views\Config;
 
@@ -14,7 +14,7 @@ use Spiral\Core\InjectableConfig;
 use Spiral\Views\Engine\Native\NativeEngine;
 use Spiral\Views\Exception\ConfigException;
 
-class ViewsConfig extends InjectableConfig
+final class ViewsConfig extends InjectableConfig
 {
     const CONFIG = "views";
 

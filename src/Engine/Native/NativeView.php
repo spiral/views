@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Views\Engine\Native;
 
@@ -16,7 +16,7 @@ use Spiral\Views\Exception\RenderException;
 use Spiral\Views\ViewInterface;
 use Spiral\Views\ViewSource;
 
-class NativeView implements ViewInterface
+final class NativeView implements ViewInterface
 {
     /*** @var ViewSource */
     protected $view;

@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Views\Engine\Native;
 
@@ -14,7 +14,7 @@ use Spiral\Views\ContextInterface;
 use Spiral\Views\Engine\AbstractEngine;
 use Spiral\Views\ViewInterface;
 
-class NativeEngine extends AbstractEngine
+final class NativeEngine extends AbstractEngine
 {
     protected const EXTENSION = 'php';
 

@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Views\Processor;
 
@@ -16,7 +16,7 @@ use Spiral\Views\ViewSource;
 /**
  * Replaces all context values in a view source based on given pattern (by default @{name|default}).
  */
-class ContextProcessor implements ProcessorInterface
+final class ContextProcessor implements ProcessorInterface
 {
     // Context injection pattern @{key|default}
     private const PATTERN = '/@\\{(?P<name>[a-z0-9_\\.\\-]+)(?: *\\| *(?P<default>[^}]+))?}/i';

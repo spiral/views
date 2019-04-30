@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Views\Loader;
 
@@ -15,7 +15,7 @@ use Spiral\Views\LoaderInterface;
 /**
  * Parse view path and return name chunks (namespace, name, basename).
  */
-class PathParser
+final class PathParser
 {
     /** @var string */
     private $defaultNamespace;
