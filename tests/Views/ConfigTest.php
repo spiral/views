@@ -26,8 +26,8 @@ class ConfigTest extends TestCase
             ]
         ]);
 
-        $this->assertTrue($config->cacheEnabled());
-        $this->assertSame('/tmp/', $config->cacheDirectory());
+        $this->assertTrue($config->isCacheEnabled());
+        $this->assertSame('/tmp/', $config->getCacheDirectory());
     }
 
     public function testNamespace()

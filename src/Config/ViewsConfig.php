@@ -34,7 +34,7 @@ final class ViewsConfig extends InjectableConfig
     /**
      * @return bool
      */
-    public function cacheEnabled(): bool
+    public function isCacheEnabled(): bool
     {
         return !empty($this->config['cache']['enable']) || !empty($this->config['cache']['enabled']);
     }
@@ -42,7 +42,7 @@ final class ViewsConfig extends InjectableConfig
     /**
      * @return string
      */
-    public function cacheDirectory(): string
+    public function getCacheDirectory(): string
     {
         return rtrim($this->config['cache']['directory'], '/') . '/';
     }
@@ -97,7 +97,7 @@ final class ViewsConfig extends InjectableConfig
      *
      * @throws ConfigException
      */
-    public function wire($item): Autowire
+    private function wire($item): Autowire
     {
         if ($item instanceof Autowire) {
             return $item;
