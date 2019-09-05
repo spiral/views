@@ -49,8 +49,8 @@ final class PathParser
      */
     public function match(string $filename): bool
     {
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        return strtolower($extension) == $this->extension;
+        $extension = substr($filename, -strlen($this->extension) - 1);
+        return strtolower($extension) === ".{$this->extension}";
     }
 
     /**

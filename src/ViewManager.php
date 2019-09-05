@@ -85,6 +85,8 @@ final class ViewManager implements ViewsInterface
         uasort($this->engines, function (EngineInterface $a, EngineInterface $b) {
             return strcmp($a->getLoader()->getExtension(), $b->getLoader()->getExtension());
         });
+
+        $this->engines = array_values($this->engines);
     }
 
     /**

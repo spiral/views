@@ -133,6 +133,7 @@ final class ViewLoader implements LoaderInterface
 
             foreach ((array)$directories as $directory) {
                 $files = $this->files->getFiles($directory);
+
                 foreach ($files as $filename) {
                     if (!$this->parser->match($filename)) {
                         // does not belong to this loader
