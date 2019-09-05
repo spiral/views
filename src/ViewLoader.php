@@ -18,7 +18,7 @@ use Spiral\Views\Loader\ViewPath;
 /**
  * Loads and locates view files associated with specific extensions.
  */
-class ViewLoader implements LoaderInterface
+final class ViewLoader implements LoaderInterface
 {
     /** @var FilesInterface */
     private $files;
@@ -56,6 +56,18 @@ class ViewLoader implements LoaderInterface
         $loader->parser = new PathParser($this->defaultNamespace, $extension);
 
         return $loader;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExtension(): ?string
+    {
+        if ($this->parser !== null) {
+            return $this->parser->getExtension();
+        }
+
+        return null;
     }
 
     /**
@@ -127,8 +139,7 @@ class ViewLoader implements LoaderInterface
                         continue;
                     }
 
-                    $name = $this->parser->fetchName($this->files->relativePath($filename,
-                        $directory));
+                    $name = $this->parser->fetchName($this->files->relativePath($filename, $directory));
                     $result[] = sprintf("%s%s%s", $ns, self::NS_SEPARATOR, $name);
                 }
             }

@@ -29,6 +29,11 @@ interface LoaderInterface
     public function withExtension(string $extension): LoaderInterface;
 
     /**
+     * @return string|null
+     */
+    public function getExtension(): ?string;
+
+    /**
      * Check if given view path has associated view in a loader. Path might include namespace prefix or extension.
      *
      * @param string $path

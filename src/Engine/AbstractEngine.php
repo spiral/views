@@ -20,6 +20,9 @@ abstract class AbstractEngine implements EngineInterface
 {
     protected const EXTENSION = '';
 
+    /** @var string */
+    protected $extension;
+
     /** @var LoaderInterface */
     protected $loader;
 
@@ -29,7 +32,7 @@ abstract class AbstractEngine implements EngineInterface
     public function withLoader(LoaderInterface $loader): EngineInterface
     {
         $engine = clone $this;
-        $engine->loader = $loader->withExtension(static::EXTENSION);
+        $engine->loader = $loader->withExtension($this->extension ?? static::EXTENSION);
 
         return $engine;
     }
@@ -40,7 +43,7 @@ abstract class AbstractEngine implements EngineInterface
     public function getLoader(): LoaderInterface
     {
         if (empty($this->loader)) {
-            throw new EngineException("No associated loader found.");
+            throw new EngineException("No associated loader found");
         }
 
         return $this->loader;

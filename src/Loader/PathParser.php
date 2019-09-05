@@ -34,6 +34,14 @@ final class PathParser
     }
 
     /**
+     * @return string
+     */
+    public function getExtension(): string
+    {
+        return $this->extension;
+    }
+
+    /**
      * Check if filename matches to expected extension.
      *
      * @param string $filename

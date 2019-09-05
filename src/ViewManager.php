@@ -13,7 +13,7 @@ use Spiral\Core\FactoryInterface;
 use Spiral\Views\Config\ViewsConfig;
 use Spiral\Views\Exception\ViewException;
 
-class ViewManager implements ViewsInterface
+final class ViewManager implements ViewsInterface
 {
     /** @var ViewsConfig */
     private $config;
@@ -81,12 +81,16 @@ class ViewManager implements ViewsInterface
     public function addEngine(EngineInterface $engine)
     {
         $this->engines[] = $engine->withLoader($this->loader);
+
+        uasort($this->engines, function (EngineInterface $a, EngineInterface $b) {
+            return strcmp($a->getLoader()->getExtension(), $b->getLoader()->getExtension());
+        });
     }
 
     /**
      * Get all associated view engines.
      *
-     * @return array
+     * @return EngineInterface[]
      */
     public function getEngines(): array
     {
@@ -102,7 +106,7 @@ class ViewManager implements ViewsInterface
      */
     public function compile(string $path)
     {
-        if (!empty($this->cache)) {
+        if ($this->cache !== null) {
             $this->cache->resetPath($path);
         }
 
@@ -123,7 +127,7 @@ class ViewManager implements ViewsInterface
      */
     public function reset(string $path)
     {
-        if (!empty($this->cache)) {
+        if ($this->cache !== null) {
             $this->cache->resetPath($path);
         }
 
@@ -146,13 +150,13 @@ class ViewManager implements ViewsInterface
      */
     public function get(string $path): ViewInterface
     {
-        if (!empty($this->cache) && $this->cache->has($this->context, $path)) {
+        if ($this->cache !== null && $this->cache->has($this->context, $path)) {
             return $this->cache->get($this->context, $path);
         }
 
         $view = $this->findEngine($path)->get($path, $this->context);
 
-        if (!empty($this->cache)) {
+        if ($this->cache !== null) {
             $this->cache->set($this->context, $path, $view);
         }
 

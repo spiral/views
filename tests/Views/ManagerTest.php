@@ -23,6 +23,20 @@ class ManagerTest extends TestCase
         $this->container = new Container();
     }
 
+    public function testMultipleEngines()
+    {
+        $manager = $this->makeManager();
+
+        $manager->addEngine(new NativeEngine($this->container, 'dark.php'));
+
+        $ext = [];
+        foreach ($manager->getEngines() as $e) {
+            $ext[] = $e->getLoader()->getExtension();
+        }
+
+        $this->assertSame(['dark.php', 'php'], $ext);
+    }
+
     public function testRender()
     {
         $manager = $this->makeManager();
