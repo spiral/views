@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -60,7 +61,7 @@ final class ViewManager implements ViewsInterface
      *
      * @param DependencyInterface $dependency
      */
-    public function addDependency(DependencyInterface $dependency)
+    public function addDependency(DependencyInterface $dependency): void
     {
         $this->context = $this->context->withDependency($dependency);
     }
@@ -78,7 +79,7 @@ final class ViewManager implements ViewsInterface
      *
      * @param EngineInterface $engine
      */
-    public function addEngine(EngineInterface $engine)
+    public function addEngine(EngineInterface $engine): void
     {
         $this->engines[] = $engine->withLoader($this->loader);
 
@@ -106,7 +107,7 @@ final class ViewManager implements ViewsInterface
      *
      * @throws ViewException
      */
-    public function compile(string $path)
+    public function compile(string $path): void
     {
         if ($this->cache !== null) {
             $this->cache->resetPath($path);
@@ -127,7 +128,7 @@ final class ViewManager implements ViewsInterface
      *
      * @param string $path
      */
-    public function reset(string $path)
+    public function reset(string $path): void
     {
         if ($this->cache !== null) {
             $this->cache->resetPath($path);

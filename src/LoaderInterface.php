@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -18,7 +19,7 @@ interface LoaderInterface
     public const NS_SEPARATOR = ':';
 
     // Default view namespace
-    public const DEFAULT_NAMESPACE = "default";
+    public const DEFAULT_NAMESPACE = 'default';
 
     /**
      * Lock loader to specific file extension.

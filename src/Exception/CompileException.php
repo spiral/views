@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -30,7 +31,7 @@ class CompileException extends EngineException
      *
      * @param array $trace
      */
-    public function setUserTrace(array $trace)
+    public function setUserTrace(array $trace): void
     {
         $this->userTrace = $trace;
     }

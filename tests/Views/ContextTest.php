@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -8,29 +11,28 @@
 
 namespace Spiral\Views\Tests;
 
-
 use PHPUnit\Framework\TestCase;
 use Spiral\Views\Context\ValueDependency;
 use Spiral\Views\ViewContext;
 
 class ContextTest extends TestCase
 {
-    public function testResolveValue()
+    public function testResolveValue(): void
     {
         $context = new ViewContext();
-        $context = $context->withDependency(new ValueDependency("test", "value"));
+        $context = $context->withDependency(new ValueDependency('test', 'value'));
 
-        $this->assertSame("value", $context->resolveValue("test"));
+        $this->assertSame('value', $context->resolveValue('test'));
     }
 
     /**
      * @expectedException \Spiral\Views\Exception\ContextException
      */
-    public function testResolveValueException()
+    public function testResolveValueException(): void
     {
         $context = new ViewContext();
-        $context = $context->withDependency(new ValueDependency("test", "value"));
+        $context = $context->withDependency(new ValueDependency('test', 'value'));
 
-        $this->assertSame("value", $context->resolveValue("other"));
+        $this->assertSame('value', $context->resolveValue('other'));
     }
 }

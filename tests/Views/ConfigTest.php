@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -17,7 +20,7 @@ use Spiral\Views\Engine\Native\NativeEngine;
 
 class ConfigTest extends TestCase
 {
-    public function testCache()
+    public function testCache(): void
     {
         $config = new ViewsConfig([
             'cache' => [
@@ -30,7 +33,7 @@ class ConfigTest extends TestCase
         $this->assertSame('/tmp/', $config->getCacheDirectory());
     }
 
-    public function testNamespace()
+    public function testNamespace(): void
     {
         $config = new ViewsConfig([
             'namespaces' => [
@@ -43,7 +46,7 @@ class ConfigTest extends TestCase
         ], $config->getNamespaces());
     }
 
-    public function testEngines()
+    public function testEngines(): void
     {
         $container = new Container();
 
@@ -66,7 +69,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function testDependencies()
+    public function testDependencies(): void
     {
         $container = new Container();
         $container->bindSingleton(
@@ -89,7 +92,7 @@ class ConfigTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\ConfigException
      */
-    public function testDependenciesError()
+    public function testDependenciesError(): void
     {
         $container = new Container();
 

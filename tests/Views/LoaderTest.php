@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -17,19 +20,19 @@ class LoaderTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\LoaderException
      */
-    public function testExistsException()
+    public function testExistsException(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
         ]);
 
-        $loader->exists("view");
+        $loader->exists('view');
     }
 
     /**
      * @expectedException \Spiral\Views\Exception\LoaderException
      */
-    public function testListException()
+    public function testListException(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -41,7 +44,7 @@ class LoaderTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\LoaderException
      */
-    public function testLoadException()
+    public function testLoadException(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -50,7 +53,7 @@ class LoaderTest extends TestCase
         $loader->load('view');
     }
 
-    public function testExists()
+    public function testExists(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -58,30 +61,30 @@ class LoaderTest extends TestCase
 
         $loader = $loader->withExtension('php');
 
-        $this->assertFalse($loader->exists("another"));
-        $this->assertFalse($loader->exists("inner/file.twig"));
-        $this->assertFalse($loader->exists("inner/file"));
+        $this->assertFalse($loader->exists('another'));
+        $this->assertFalse($loader->exists('inner/file.twig'));
+        $this->assertFalse($loader->exists('inner/file'));
 
-        $this->assertTrue($loader->exists("view"));
-        $this->assertTrue($loader->exists("inner/view"));
-        $this->assertTrue($loader->exists("inner/partial/view"));
+        $this->assertTrue($loader->exists('view'));
+        $this->assertTrue($loader->exists('inner/view'));
+        $this->assertTrue($loader->exists('inner/partial/view'));
 
-        $this->assertTrue($loader->exists("view.php"));
+        $this->assertTrue($loader->exists('view.php'));
 
-        $this->assertTrue($loader->exists("default:view"));
-        $this->assertTrue($loader->exists("default:view.php"));
+        $this->assertTrue($loader->exists('default:view'));
+        $this->assertTrue($loader->exists('default:view.php'));
 
-        $this->assertTrue($loader->exists("@default/view"));
-        $this->assertTrue($loader->exists("@default/view.php"));
+        $this->assertTrue($loader->exists('@default/view'));
+        $this->assertTrue($loader->exists('@default/view.php'));
 
-        $this->assertTrue($loader->exists("default:inner/partial/view"));
-        $this->assertTrue($loader->exists("default:inner/partial/view.php"));
+        $this->assertTrue($loader->exists('default:inner/partial/view'));
+        $this->assertTrue($loader->exists('default:inner/partial/view.php'));
 
-        $this->assertTrue($loader->exists("@default/inner/partial/view"));
-        $this->assertTrue($loader->exists("@default/inner/partial/view.php"));
+        $this->assertTrue($loader->exists('@default/inner/partial/view'));
+        $this->assertTrue($loader->exists('@default/inner/partial/view.php'));
     }
 
-    public function testList()
+    public function testList(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -99,7 +102,7 @@ class LoaderTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\LoaderException
      */
-    public function testLoadNotFound()
+    public function testLoadNotFound(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -113,40 +116,40 @@ class LoaderTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\PathException
      */
-    public function testBadPath()
+    public function testBadPath(): void
     {
-        $parser = new PathParser("default", "php");
+        $parser = new PathParser('default', 'php');
         $parser->parse('@namespace');
     }
 
     /**
      * @expectedException \Spiral\Views\Exception\PathException
      */
-    public function testEmptyPath()
+    public function testEmptyPath(): void
     {
-        $parser = new PathParser("default", "php");
-        $parser->parse("");
+        $parser = new PathParser('default', 'php');
+        $parser->parse('');
     }
 
     /**
      * @expectedException \Spiral\Views\Exception\PathException
      */
-    public function testInvalidPath()
+    public function testInvalidPath(): void
     {
-        $parser = new PathParser("default", "php");
+        $parser = new PathParser('default', 'php');
         $parser->parse("hello\0");
     }
 
     /**
      * @expectedException \Spiral\Views\Exception\PathException
      */
-    public function testExternalPath()
+    public function testExternalPath(): void
     {
-        $parser = new PathParser("default", "php");
+        $parser = new PathParser('default', 'php');
         $parser->parse('../../../index.php');
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default'
@@ -169,7 +172,7 @@ class LoaderTest extends TestCase
         $this->assertSame('hello inner partial world', $source->getCode());
     }
 
-    public function testMultipleNamespaces()
+    public function testMultipleNamespaces(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',

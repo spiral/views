@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -19,7 +20,7 @@ final class ViewCache
     /**
      * @param ContextInterface|null $context
      */
-    public function reset(ContextInterface $context = null)
+    public function reset(ContextInterface $context = null): void
     {
         if (empty($context)) {
             $this->cache = [];
@@ -34,7 +35,7 @@ final class ViewCache
      *
      * @param string $path
      */
-    public function resetPath(string $path)
+    public function resetPath(string $path): void
     {
         foreach ($this->cache as &$cache) {
             unset($cache[$path], $cache);
@@ -56,7 +57,7 @@ final class ViewCache
      * @param string           $path
      * @param ViewInterface    $view
      */
-    public function set(ContextInterface $context, string $path, ViewInterface $view)
+    public function set(ContextInterface $context, string $path, ViewInterface $view): void
     {
         $this->cache[$context->getID()][$path] = $view;
     }

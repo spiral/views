@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -16,7 +17,7 @@ use Spiral\Views\Exception\ConfigException;
 
 final class ViewsConfig extends InjectableConfig
 {
-    const CONFIG = "views";
+    public const CONFIG = 'views';
 
     /** @var array */
     protected $config = [
@@ -107,6 +108,6 @@ final class ViewsConfig extends InjectableConfig
             return new Autowire($item);
         }
 
-        throw new ConfigException("Invalid class reference in view config.");
+        throw new ConfigException('Invalid class reference in view config.');
     }
 }

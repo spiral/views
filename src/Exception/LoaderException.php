@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -14,5 +15,4 @@ namespace Spiral\Views\Exception;
  */
 class LoaderException extends ViewException
 {
-
 }

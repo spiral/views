@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -43,7 +44,7 @@ abstract class AbstractEngine implements EngineInterface
     public function getLoader(): LoaderInterface
     {
         if (empty($this->loader)) {
-            throw new EngineException("No associated loader found");
+            throw new EngineException('No associated loader found');
         }
 
         return $this->loader;

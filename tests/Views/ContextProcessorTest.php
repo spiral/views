@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -18,7 +21,7 @@ class ContextProcessorTest extends TestCase
 {
     use ProcessorTrait;
 
-    public function testProcessContext()
+    public function testProcessContext(): void
     {
         $this->processors[] = new ContextProcessor();
 
@@ -34,7 +37,7 @@ class ContextProcessorTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\ContextException
      */
-    public function testProcessContextException()
+    public function testProcessContextException(): void
     {
         $this->processors[] = new ContextProcessor();
 

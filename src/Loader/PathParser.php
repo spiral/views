@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -119,7 +120,7 @@ final class PathParser
      * @param string $path
      * @throws PathException
      */
-    private function validatePath(string $path)
+    private function validatePath(string $path): void
     {
         if (empty($path)) {
             throw new PathException('A view path is empty');

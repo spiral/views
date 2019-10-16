@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -79,7 +80,7 @@ final class ViewLoader implements LoaderInterface
     public function exists(string $path, string &$filename = null, ViewPath &$parsed = null): bool
     {
         if (empty($this->parser)) {
-            throw new LoaderException("Unable to locate view source, no extension has been associated.");
+            throw new LoaderException('Unable to locate view source, no extension has been associated.');
         }
 
         $parsed = $this->parser->parse($path);
@@ -93,8 +94,8 @@ final class ViewLoader implements LoaderInterface
 
         foreach ((array)$this->namespaces[$parsed->getNamespace()] as $directory) {
             $directory = $this->files->normalizePath($directory, true);
-            if ($this->files->exists(sprintf("%s%s", $directory, $parsed->getBasename()))) {
-                $filename = sprintf("%s%s", $directory, $parsed->getBasename());
+            if ($this->files->exists(sprintf('%s%s', $directory, $parsed->getBasename()))) {
+                $filename = sprintf('%s%s', $directory, $parsed->getBasename());
 
                 return true;
             }
@@ -122,7 +123,7 @@ final class ViewLoader implements LoaderInterface
     public function list(string $namespace = null): array
     {
         if (empty($this->parser)) {
-            throw new LoaderException("Unable to list view sources, no extension has been associated.");
+            throw new LoaderException('Unable to list view sources, no extension has been associated.');
         }
 
         $result = [];
@@ -141,7 +142,7 @@ final class ViewLoader implements LoaderInterface
                     }
 
                     $name = $this->parser->fetchName($this->files->relativePath($filename, $directory));
-                    $result[] = sprintf("%s%s%s", $ns, self::NS_SEPARATOR, $name);
+                    $result[] = sprintf('%s%s%s', $ns, self::NS_SEPARATOR, $name);
                 }
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -29,7 +30,7 @@ class RenderException extends ViewException
      *
      * @param array $trace
      */
-    public function setUserTrace(array $trace)
+    public function setUserTrace(array $trace): void
     {
         $this->userTrace = $trace;
     }

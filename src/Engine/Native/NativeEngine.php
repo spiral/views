@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -36,7 +37,7 @@ final class NativeEngine extends AbstractEngine
     /**
      * @inheritdoc
      */
-    public function compile(string $path, ContextInterface $context)
+    public function compile(string $path, ContextInterface $context): void
     {
         // doing nothing, native views can not be compiled
     }
@@ -44,7 +45,7 @@ final class NativeEngine extends AbstractEngine
     /**
      * @inheritdoc
      */
-    public function reset(string $path, ContextInterface $context)
+    public function reset(string $path, ContextInterface $context): void
     {
         // doing nothing, native views can not be compiled
     }

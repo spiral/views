@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -18,12 +21,12 @@ class ManagerTest extends TestCase
 {
     protected $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
     }
 
-    public function testMultipleEngines()
+    public function testMultipleEngines(): void
     {
         $manager = $this->makeManager();
 
@@ -37,7 +40,7 @@ class ManagerTest extends TestCase
         $this->assertSame(['dark.php', 'php'], $ext);
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $manager = $this->makeManager();
         $manager->addDependency(new ValueDependency('name', 'hello'));
@@ -45,7 +48,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $manager = $this->makeManager();
         $manager->addDependency(new ValueDependency('name', 'hello'));
@@ -57,7 +60,7 @@ class ManagerTest extends TestCase
         $this->assertNotSame($view, $manager->get('other:var'));
     }
 
-    public function testCompile()
+    public function testCompile(): void
     {
         $manager = $this->makeManager();
 
@@ -75,7 +78,7 @@ class ManagerTest extends TestCase
         $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
-    public function testReset()
+    public function testReset(): void
     {
         $manager = $this->makeManager();
 
@@ -94,7 +97,7 @@ class ManagerTest extends TestCase
         $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
-    public function testEngines()
+    public function testEngines(): void
     {
         $manager = $this->makeManager();
         $this->assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
@@ -103,10 +106,10 @@ class ManagerTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\ViewException
      */
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $manager = $this->makeManager();
-        $manager->render("hell-world");
+        $manager->render('hell-world');
     }
 
     protected function makeManager(array $config = []): ViewManager

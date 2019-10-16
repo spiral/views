@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -21,7 +24,7 @@ use Spiral\Views\ViewLoader;
 
 class CacheTest extends TestCase
 {
-    public function testSimpleCache()
+    public function testSimpleCache(): void
     {
         $ctx = new ViewContext();
         $cache = new ViewCache();
@@ -36,13 +39,13 @@ class CacheTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\CacheException
      */
-    public function testGet()
+    public function testGet(): void
     {
         $cache = new ViewCache();
         $cache->get(new ViewContext(), 'default:view');
     }
 
-    public function testReset()
+    public function testReset(): void
     {
         $ctx = new ViewContext();
         $ctx2 = $ctx->withDependency(new ValueDependency('test', 'value'));
@@ -64,7 +67,7 @@ class CacheTest extends TestCase
         $this->assertTrue($cache->has($ctx2, 'other:view'));
     }
 
-    public function testResetAll()
+    public function testResetAll(): void
     {
         $ctx = new ViewContext();
         $ctx2 = $ctx->withDependency(new ValueDependency('test', 'value'));
@@ -86,7 +89,7 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->has($ctx2, 'other:view'));
     }
 
-    public function testResetPath()
+    public function testResetPath(): void
     {
         $ctx = new ViewContext();
         $cache = new ViewCache();
@@ -106,7 +109,7 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->has($ctx, 'other:view'));
     }
 
-    public function testContextValue()
+    public function testContextValue(): void
     {
         $ctx = new ViewContext();
         $ctx = $ctx->withDependency(new ValueDependency('test', 'value'));

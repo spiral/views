@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -48,7 +49,7 @@ final class NativeView implements ViewInterface
         $__outputLevel__ = ob_get_level();
 
         try {
-            ContainerScope::runScope($this->container, function () use ($data) {
+            ContainerScope::runScope($this->container, function () use ($data): void {
                 extract($data, EXTR_OVERWRITE);
                 // render view in context and output buffer scope, context can be accessed using $this->context
                 require $this->view->getFilename();

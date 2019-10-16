@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -17,7 +20,7 @@ use Spiral\Views\ViewLoader;
 
 class NativeTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
@@ -39,13 +42,13 @@ class NativeTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\EngineException
      */
-    public function testGetNoLoader()
+    public function testGetNoLoader(): void
     {
         $engine = new NativeEngine(new Container());
         $engine->get('other:view', new ViewContext());
     }
 
-    public function testRenderWithValue()
+    public function testRenderWithValue(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
@@ -65,7 +68,7 @@ class NativeTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\RenderException
      */
-    public function testRenderException()
+    public function testRenderException(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
@@ -83,7 +86,7 @@ class NativeTest extends TestCase
         $view->render([]);
     }
 
-    public function testRenderBufferWithValue()
+    public function testRenderBufferWithValue(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
@@ -103,7 +106,7 @@ class NativeTest extends TestCase
     /**
      * @expectedException \Spiral\Views\Exception\RenderException
      */
-    public function testRenderBufferException()
+    public function testRenderBufferException(): void
     {
         $loader = new ViewLoader([
             'default' => __DIR__ . '/../fixtures/default',
