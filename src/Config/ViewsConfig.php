@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Views\Config;
@@ -14,24 +7,28 @@ namespace Spiral\Views\Config;
 use Spiral\Core\Container\Autowire;
 use Spiral\Core\InjectableConfig;
 use Spiral\Views\Engine\Native\NativeEngine;
-use Spiral\Views\Exception\ConfigException;
 
 final class ViewsConfig extends InjectableConfig
 {
     public const CONFIG = 'views';
 
-    /** @var array */
-    protected $config = [
-        'cache'        => [
-            'enable'    => false,
+    protected array $config = [
+        'cache' => [
+            'enable' => false,
             'directory' => '/tmp',
         ],
-        'namespaces'   => [],
+        'namespaces' => [],
         'dependencies' => [],
-        'engines'      => [
+        'engines' => [
             NativeEngine::class,
         ],
+        'globalVariables' => [],
     ];
+
+    public function getGlobalVariables(): array
+    {
+        return (array) ($this->config['globalVariables'] ?? []);
+    }
 
     public function isCacheEnabled(): bool
     {
@@ -40,7 +37,7 @@ final class ViewsConfig extends InjectableConfig
 
     public function getCacheDirectory(): string
     {
-        return rtrim($this->config['cache']['directory'], '/') . '/';
+        return \rtrim($this->config['cache']['directory'] ?? '', '/') . '/';
     }
 
     /**
@@ -48,58 +45,44 @@ final class ViewsConfig extends InjectableConfig
      */
     public function getNamespaces(): array
     {
-        return $this->config['namespaces'];
+        return (array) ($this->config['namespaces'] ?? []);
     }
 
     /**
      * Class names of all view dependencies.
      *
      * @return array<int, Autowire>
-     *
-     * @throws ConfigException
      */
     public function getDependencies(): array
     {
-        $dependencies = [];
-        foreach ($this->config['dependencies'] as $dependency) {
-            $dependencies[] = $this->wire($dependency);
-        }
-
-        return $dependencies;
+        return \array_map(
+            fn (mixed $dependency): Autowire =>  $this->wire($dependency),
+            (array) ($this->config['dependencies'] ?? [])
+        );
     }
 
     /**
      * Get all the engines associated with view component.
      *
      * @return array<int, Autowire>
-     *
-     * @throws ConfigException
      */
     public function getEngines(): array
     {
-        $engines = [];
-        foreach ($this->config['engines'] as $engine) {
-            $engines[] = $this->wire($engine);
-        }
-
-        return $engines;
+        return \array_map(
+            fn (mixed $engine): Autowire =>  $this->wire($engine),
+            (array) ($this->config['engines'] ?? [])
+        );
     }
 
     /**
      * @param Autowire|class-string $item
-     *
-     * @throws ConfigException
      */
-    private function wire($item): Autowire
+    private function wire(Autowire|string $item): Autowire
     {
         if ($item instanceof Autowire) {
             return $item;
         }
 
-        if (is_string($item)) {
-            return new Autowire($item);
-        }
-
-        throw new ConfigException('Invalid class reference in view config.');
+        return new Autowire($item);
     }
 }

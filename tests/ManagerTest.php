@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Tests\Views;
@@ -17,6 +10,7 @@ use Spiral\Views\Config\ViewsConfig;
 use Spiral\Views\Context\ValueDependency;
 use Spiral\Views\Engine\Native\NativeEngine;
 use Spiral\Views\Exception\ViewException;
+use Spiral\Views\GlobalVariables;
 use Spiral\Views\LoaderInterface;
 use Spiral\Views\ViewCache;
 use Spiral\Views\ViewLoader;
@@ -120,23 +114,26 @@ class ManagerTest extends TestCase
     protected function makeManager(array $config = []): ViewManager
     {
         return new ViewManager(
-            new ViewsConfig([
-                    'cache'        => [
-                        'enable'    => true,
-                        'memory'    => true,
+            new ViewsConfig(
+                [
+                    'cache' => [
+                        'enable' => true,
+                        'memory' => true,
                         'directory' => '/tmp',
                     ],
-                    'namespaces'   => [
-                        'default' => __DIR__ . '/fixtures/default',
-                        'other'   => __DIR__ . '/fixtures/other',
+                    'namespaces' => [
+                        'default' => __DIR__.'/fixtures/default',
+                        'other' => __DIR__.'/fixtures/other',
                     ],
                     'dependencies' => [
 
                     ],
-                    'engines'      => [
+                    'engines' => [
                         NativeEngine::class,
                     ],
-                ] + $config),
+                ] + $config
+            ),
+            new GlobalVariables(),
             $this->container
         );
     }

@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Views;
@@ -17,24 +10,19 @@ use Spiral\Views\Exception\ViewException;
 
 final class ViewManager implements ViewsInterface
 {
-    /** @var ViewsConfig */
-    private $config;
-
-    /** @var ContextInterface */
-    private $context;
-
-    /** @var LoaderInterface */
-    private $loader;
-
-    /** @var ViewCache|null */
-    private $cache;
+    private readonly LoaderInterface $loader;
+    private ?ViewCache $cache = null;
+    private ContextInterface $context;
 
     /** @var EngineInterface[] */
-    private $engines = [];
+    private array $engines = [];
 
-    public function __construct(ViewsConfig $config, FactoryInterface $factory, ?ContextInterface $context = null)
-    {
-        $this->config = $config;
+    public function __construct(
+        private readonly ViewsConfig $config,
+        private readonly GlobalVariablesInterface $globalVariables,
+        FactoryInterface $factory,
+        ?ContextInterface $context = null
+    ) {
         $this->context = $context ?? new ViewContext();
         $this->loader = $factory->make(LoaderInterface::class, [
             'namespaces' => $config->getNamespaces(),
@@ -74,7 +62,10 @@ final class ViewManager implements ViewsInterface
         $this->engines[] = $engine->withLoader($this->loader);
 
         \uasort($this->engines, static function (EngineInterface $a, EngineInterface $b) {
-            return \strcmp($a->getLoader()->getExtension(), $b->getLoader()->getExtension());
+            return \strcmp(
+                $a->getLoader()->getExtension() ?? '',
+                $b->getLoader()->getExtension() ?? ''
+            );
         });
 
         $this->engines = \array_values($this->engines);
@@ -98,9 +89,7 @@ final class ViewManager implements ViewsInterface
      */
     public function compile(string $path): void
     {
-        if ($this->cache !== null) {
-            $this->cache->resetPath($path);
-        }
+        $this->cache?->resetPath($path);
 
         $engine = $this->findEngine($path);
 
@@ -117,9 +106,7 @@ final class ViewManager implements ViewsInterface
      */
     public function reset(string $path): void
     {
-        if ($this->cache !== null) {
-            $this->cache->resetPath($path);
-        }
+        $this->cache?->resetPath($path);
 
         $engine = $this->findEngine($path);
 
@@ -133,31 +120,31 @@ final class ViewManager implements ViewsInterface
     /**
      * Get view from one of the associated engines.
      *
-     *
      * @throws ViewException
      */
     public function get(string $path): ViewInterface
     {
-        if ($this->cache !== null && $this->cache->has($this->context, $path)) {
+        if ($this->cache?->has($this->context, $path)) {
             return $this->cache->get($this->context, $path);
         }
 
         $view = $this->findEngine($path)->get($path, $this->context);
 
-        if ($this->cache !== null) {
-            $this->cache->set($this->context, $path, $view);
-        }
+        /**
+         * @psalm-suppress TypeDoesNotContainType
+         * @psalm-suppress RedundantCondition
+         */
+        $this->cache?->set($this->context, $path, $view);
 
         return $view;
     }
 
     /**
-     *
      * @throws ViewException
      */
     public function render(string $path, array $data = []): string
     {
-        return $this->get($path)->render($data);
+        return $this->get($path)->render(\array_merge($this->globalVariables->getAll(), $data));
     }
 
     /**
@@ -172,6 +159,6 @@ final class ViewManager implements ViewsInterface
             }
         }
 
-        throw new ViewException("Unable to detect view engine for `{$path}`.");
+        throw new ViewException(\sprintf('Unable to detect view engine for `%s`.', $path));
     }
 }
