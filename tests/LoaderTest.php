@@ -53,27 +53,27 @@ class LoaderTest extends TestCase
 
         $loader = $loader->withExtension('php');
 
-        self::assertFalse($loader->exists('another'));
-        self::assertFalse($loader->exists('inner/file.twig'));
-        self::assertFalse($loader->exists('inner/file'));
+        $this->assertFalse($loader->exists('another'));
+        $this->assertFalse($loader->exists('inner/file.twig'));
+        $this->assertFalse($loader->exists('inner/file'));
 
-        self::assertTrue($loader->exists('view'));
-        self::assertTrue($loader->exists('inner/view'));
-        self::assertTrue($loader->exists('inner/partial/view'));
+        $this->assertTrue($loader->exists('view'));
+        $this->assertTrue($loader->exists('inner/view'));
+        $this->assertTrue($loader->exists('inner/partial/view'));
 
-        self::assertTrue($loader->exists('view.php'));
+        $this->assertTrue($loader->exists('view.php'));
 
-        self::assertTrue($loader->exists('default:view'));
-        self::assertTrue($loader->exists('default:view.php'));
+        $this->assertTrue($loader->exists('default:view'));
+        $this->assertTrue($loader->exists('default:view.php'));
 
-        self::assertTrue($loader->exists('@default/view'));
-        self::assertTrue($loader->exists('@default/view.php'));
+        $this->assertTrue($loader->exists('@default/view'));
+        $this->assertTrue($loader->exists('@default/view.php'));
 
-        self::assertTrue($loader->exists('default:inner/partial/view'));
-        self::assertTrue($loader->exists('default:inner/partial/view.php'));
+        $this->assertTrue($loader->exists('default:inner/partial/view'));
+        $this->assertTrue($loader->exists('default:inner/partial/view.php'));
 
-        self::assertTrue($loader->exists('@default/inner/partial/view'));
-        self::assertTrue($loader->exists('@default/inner/partial/view.php'));
+        $this->assertTrue($loader->exists('@default/inner/partial/view'));
+        $this->assertTrue($loader->exists('@default/inner/partial/view.php'));
     }
 
     public function testList(): void
@@ -85,10 +85,10 @@ class LoaderTest extends TestCase
         $loader = $loader->withExtension('php');
         $files = $loader->list();
 
-        self::assertContains('default:view', $files);
-        self::assertContains('default:inner/view', $files);
-        self::assertContains('default:inner/partial/view', $files);
-        self::assertNotContains('default:inner/file', $files);
+        $this->assertContains('default:view', $files);
+        $this->assertContains('default:inner/view', $files);
+        $this->assertContains('default:inner/partial/view', $files);
+        $this->assertNotContains('default:inner/file', $files);
     }
 
     public function testLoadNotFound(): void
@@ -145,18 +145,18 @@ class LoaderTest extends TestCase
         $loader = $loader->withExtension('php');
 
         $source = $loader->load('inner/partial/view');
-        self::assertNotNull($source);
+        $this->assertNotNull($source);
 
-        self::assertSame('inner/partial/view', $source->getName());
-        self::assertSame('default', $source->getNamespace());
-        self::assertFileExists($source->getFilename());
+        $this->assertSame('inner/partial/view', $source->getName());
+        $this->assertSame('default', $source->getNamespace());
+        $this->assertFileExists($source->getFilename());
 
-        self::assertSame('hello inner partial world', $source->getCode());
+        $this->assertSame('hello inner partial world', $source->getCode());
 
         $newSource = $source->withCode('new code');
 
-        self::assertSame('new code', $newSource->getCode());
-        self::assertSame('hello inner partial world', $source->getCode());
+        $this->assertSame('new code', $newSource->getCode());
+        $this->assertSame('hello inner partial world', $source->getCode());
     }
 
     public function testMultipleNamespaces(): void
@@ -169,15 +169,15 @@ class LoaderTest extends TestCase
 
         $loader = $loader->withExtension('php');
 
-        self::assertTrue($loader->exists('other:view'));
-        self::assertFalse($loader->exists('non-existed:view'));
+        $this->assertTrue($loader->exists('other:view'));
+        $this->assertFalse($loader->exists('non-existed:view'));
 
         $files = $loader->list();
-        self::assertContains('default:view', $files);
-        self::assertContains('other:view', $files);
+        $this->assertContains('default:view', $files);
+        $this->assertContains('other:view', $files);
 
         $files = $loader->list('other');
-        self::assertCount(5, $files);
-        self::assertContains('other:view', $files);
+        $this->assertCount(5, $files);
+        $this->assertContains('other:view', $files);
     }
 }

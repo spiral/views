@@ -37,7 +37,7 @@ class ManagerTest extends TestCase
             $ext[] = $e->getLoader()->getExtension();
         }
 
-        self::assertSame(['dark.php', 'php'], $ext);
+        $this->assertSame(['dark.php', 'php'], $ext);
     }
 
     public function testRender(): void
@@ -45,7 +45,7 @@ class ManagerTest extends TestCase
         $manager = $this->makeManager();
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
-        self::assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
+        $this->assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
     }
 
     public function testGet(): void
@@ -54,10 +54,10 @@ class ManagerTest extends TestCase
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
         $view = $manager->get('other:var');
-        self::assertSame($view, $manager->get('other:var'));
+        $this->assertSame($view, $manager->get('other:var'));
 
         $manager->reset('other:var');
-        self::assertNotSame($view, $manager->get('other:var'));
+        $this->assertNotSame($view, $manager->get('other:var'));
     }
 
     public function testCompile(): void
@@ -72,10 +72,10 @@ class ManagerTest extends TestCase
 
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
-        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
+        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
 
         $manager->compile('other:var');
-        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
+        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testReset(): void
@@ -91,16 +91,16 @@ class ManagerTest extends TestCase
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
 
-        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
+        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
         $manager->reset('other:var');
 
-        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
+        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testEngines(): void
     {
         $manager = $this->makeManager();
-        self::assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
+        $this->assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
     }
 
     public function testNotFound(): void
