@@ -30,7 +30,7 @@ class NativeTest extends TestCase
         $engine->compile('other:view', new ViewContext());
         $view = $engine->get('other:view', $ctx = new ViewContext());
 
-        self::assertSame('other world', $view->render([]));
+        $this->assertSame('other world', $view->render([]));
     }
 
     public function testGetNoLoader(): void
@@ -55,7 +55,7 @@ class NativeTest extends TestCase
         $engine = $engine->withLoader($loader);
 
         $view = $engine->get('other:var', $ctx = new ViewContext());
-        self::assertSame('hello', $view->render(['value' => 'hello']));
+        $this->assertSame('hello', $view->render(['value' => 'hello']));
     }
 
     public function testRenderException(): void
@@ -92,7 +92,7 @@ class NativeTest extends TestCase
         $engine = $engine->withLoader($loader);
 
         $view = $engine->get('other:buf', $ctx = new ViewContext());
-        self::assertSame('', $view->render(['value' => 'hello']));
+        $this->assertSame('', $view->render(['value' => 'hello']));
     }
 
     public function testRenderBufferException(): void
