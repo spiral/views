@@ -20,12 +20,6 @@ class ManagerTest extends TestCase
 {
     protected $container;
 
-    public function setUp(): void
-    {
-        $this->container = new Container();
-        $this->container->bindSingleton(LoaderInterface::class, ViewLoader::class);
-    }
-
     public function testMultipleEngines(): void
     {
         $manager = $this->makeManager();
@@ -37,7 +31,7 @@ class ManagerTest extends TestCase
             $ext[] = $e->getLoader()->getExtension();
         }
 
-        $this->assertSame(['dark.php', 'php'], $ext);
+        self::assertSame(['dark.php', 'php'], $ext);
     }
 
     public function testRender(): void
@@ -45,7 +39,7 @@ class ManagerTest extends TestCase
         $manager = $this->makeManager();
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
-        $this->assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
+        self::assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
     }
 
     public function testGet(): void
@@ -54,10 +48,10 @@ class ManagerTest extends TestCase
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
         $view = $manager->get('other:var');
-        $this->assertSame($view, $manager->get('other:var'));
+        self::assertSame($view, $manager->get('other:var'));
 
         $manager->reset('other:var');
-        $this->assertNotSame($view, $manager->get('other:var'));
+        self::assertNotSame($view, $manager->get('other:var'));
     }
 
     public function testCompile(): void
@@ -72,10 +66,10 @@ class ManagerTest extends TestCase
 
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
-        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
+        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
 
         $manager->compile('other:var');
-        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
+        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testReset(): void
@@ -91,16 +85,16 @@ class ManagerTest extends TestCase
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
 
-        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
+        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
         $manager->reset('other:var');
 
-        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
+        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testEngines(): void
     {
         $manager = $this->makeManager();
-        $this->assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
+        self::assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
     }
 
     public function testNotFound(): void
@@ -109,6 +103,12 @@ class ManagerTest extends TestCase
 
         $manager = $this->makeManager();
         $manager->render('hell-world');
+    }
+
+    protected function setUp(): void
+    {
+        $this->container = new Container();
+        $this->container->bindSingleton(LoaderInterface::class, ViewLoader::class);
     }
 
     protected function makeManager(array $config = []): ViewManager
@@ -122,8 +122,8 @@ class ManagerTest extends TestCase
                         'directory' => '/tmp',
                     ],
                     'namespaces' => [
-                        'default' => __DIR__.'/fixtures/default',
-                        'other' => __DIR__.'/fixtures/other',
+                        'default' => __DIR__ . '/fixtures/default',
+                        'other' => __DIR__ . '/fixtures/other',
                     ],
                     'dependencies' => [
 
@@ -131,10 +131,10 @@ class ManagerTest extends TestCase
                     'engines' => [
                         NativeEngine::class,
                     ],
-                ] + $config
+                ] + $config,
             ),
             new GlobalVariables(),
-            $this->container
+            $this->container,
         );
     }
 }
