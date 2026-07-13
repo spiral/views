@@ -22,7 +22,7 @@ final class ViewLoader implements LoaderInterface
 
     public function __construct(
         private readonly array $namespaces,
-        FilesInterface $files = null,
+        ?FilesInterface $files = null,
         private readonly string $defaultNamespace = self::DEFAULT_NAMESPACE,
         private readonly ?EventDispatcherInterface $dispatcher = null,
     ) {
@@ -50,7 +50,7 @@ final class ViewLoader implements LoaderInterface
      * @psalm-assert-if-true non-empty-string $filename
      * @psalm-assert-if-true ViewPath $parsed
      */
-    public function exists(string $path, string &$filename = null, ViewPath &$parsed = null): bool
+    public function exists(string $path, ?string &$filename = null, ?ViewPath &$parsed = null): bool
     {
         if (empty($this->parser)) {
             throw new LoaderException('Unable to locate view source, no extension has been associated.');
@@ -65,7 +65,7 @@ final class ViewLoader implements LoaderInterface
             return false;
         }
 
-        foreach ((array)$this->namespaces[$parsed->getNamespace()] as $directory) {
+        foreach ((array) $this->namespaces[$parsed->getNamespace()] as $directory) {
             $directory = $this->files->normalizePath($directory, true);
             if ($this->files->exists(\sprintf('%s%s', $directory, $parsed->getBasename()))) {
                 $filename = \sprintf('%s%s', $directory, $parsed->getBasename());
@@ -88,11 +88,11 @@ final class ViewLoader implements LoaderInterface
         return new ViewSource(
             $filename,
             $parsed->getNamespace(),
-            $parsed->getName()
+            $parsed->getName(),
         );
     }
 
-    public function list(string $namespace = null): array
+    public function list(?string $namespace = null): array
     {
         if (empty($this->parser)) {
             throw new LoaderException('Unable to list view sources, no extension has been associated.');
@@ -104,7 +104,7 @@ final class ViewLoader implements LoaderInterface
                 continue;
             }
 
-            foreach ((array)$directories as $directory) {
+            foreach ((array) $directories as $directory) {
                 $files = $this->files->getFiles($directory);
 
                 foreach ($files as $filename) {

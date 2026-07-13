@@ -9,14 +9,14 @@ use Spiral\Views\Context\ValueDependency;
 use Spiral\Views\Exception\ContextException;
 use Spiral\Views\ViewContext;
 
-class ContextTest extends TestCase
+final class ContextTest extends TestCase
 {
     public function testResolveValue(): void
     {
         $context = new ViewContext();
         $context = $context->withDependency(new ValueDependency('test', 'value'));
 
-        $this->assertSame('value', $context->resolveValue('test'));
+        self::assertSame('value', $context->resolveValue('test'));
     }
 
     public function testResolveValueException(): void
@@ -26,6 +26,6 @@ class ContextTest extends TestCase
         $context = new ViewContext();
         $context = $context->withDependency(new ValueDependency('test', 'value'));
 
-        $this->assertSame('value', $context->resolveValue('other'));
+        self::assertSame('value', $context->resolveValue('other'));
     }
 }

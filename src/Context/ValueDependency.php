@@ -11,12 +11,12 @@ use Spiral\Views\DependencyInterface;
  */
 final class ValueDependency implements DependencyInterface
 {
-    private array $variants;
+    private readonly array $variants;
 
     public function __construct(
         private readonly string $name,
-        private mixed $value,
-        array $variants = null
+        private readonly mixed $value,
+        ?array $variants = null,
     ) {
         $this->variants = $variants ?? [$value];
     }
