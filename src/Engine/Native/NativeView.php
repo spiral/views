@@ -14,8 +14,9 @@ final class NativeView implements ViewInterface
 {
     public function __construct(
         private readonly ViewSource $view,
-        private readonly ContainerInterface $container,
-    ) {}
+        private readonly ContainerInterface $container
+    ) {
+    }
 
     public function render(array $data = []): string
     {
@@ -41,7 +42,6 @@ final class NativeView implements ViewInterface
             }
         }
 
-        $result = \ob_get_clean();
-        return $result === false ? '' : $result;
+        return \ob_get_clean();
     }
 }

@@ -17,9 +17,9 @@ final class ContextProcessor implements ProcessorInterface
     // Context injection pattern @{key|default}
     private const PATTERN = '/@\\{(?P<name>[a-z0-9_\\.\\-]+)(?: *\\| *(?P<default>[^}]+))?}/i';
 
-    private readonly string $pattern;
+    private string $pattern;
 
-    public function __construct(?string $pattern = null)
+    public function __construct(string $pattern = null)
     {
         $this->pattern = $pattern ?? self::PATTERN;
     }
@@ -36,7 +36,7 @@ final class ContextProcessor implements ProcessorInterface
                         return $matches['default'] ?? throw $e;
                     }
                 },
-                $source->getCode(),
+                $source->getCode()
             ),
         );
     }

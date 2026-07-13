@@ -13,8 +13,9 @@ use Spiral\Views\Context\ValueDependency;
 final class ContextGenerator
 {
     public function __construct(
-        private readonly ContextInterface $context,
-    ) {}
+        private readonly ContextInterface $context
+    ) {
+    }
 
     /**
      * Generate all possible context variations.

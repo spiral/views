@@ -12,14 +12,14 @@ final class GlobalVariablesTest extends TestCase
     public function testSets(): void
     {
         $variables = new GlobalVariables([
-            'foo' => 'bar',
+            'foo' => 'bar'
         ]);
 
-        self::assertSame('bar', $variables->getAll()['foo']);
-        self::assertArrayNotHasKey('baf', $variables->getAll());
+        $this->assertSame('bar', $variables->getAll()['foo']);
+        $this->assertArrayNotHasKey('baf', $variables->getAll());
 
         $variables->set('baz', 'baf');
 
-        self::assertSame('baf', $variables->getAll()['baz']);
+        $this->assertSame('baf', $variables->getAll()['baz']);
     }
 }

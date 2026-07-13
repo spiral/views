@@ -14,8 +14,9 @@ final class ViewSource
     public function __construct(
         private readonly string $filename,
         private readonly string $namespace,
-        private readonly string $name,
-    ) {}
+        private readonly string $name
+    ) {
+    }
 
     /**
      * Template namespace.
@@ -46,11 +47,7 @@ final class ViewSource
      */
     public function getCode(): string
     {
-        $result = $this->code ?? \file_get_contents($this->getFilename());
-        $result === false and throw new \RuntimeException(
-            \sprintf('Unable to read file `%s`.', $this->getFilename()),
-        );
-        return $result;
+        return $this->code ?? \file_get_contents($this->getFilename());
     }
 
     /**

@@ -16,9 +16,15 @@ use Spiral\Views\ViewCache;
 use Spiral\Views\ViewLoader;
 use Spiral\Views\ViewManager;
 
-final class ManagerTest extends TestCase
+class ManagerTest extends TestCase
 {
     protected $container;
+
+    public function setUp(): void
+    {
+        $this->container = new Container();
+        $this->container->bindSingleton(LoaderInterface::class, ViewLoader::class);
+    }
 
     public function testMultipleEngines(): void
     {
@@ -31,7 +37,7 @@ final class ManagerTest extends TestCase
             $ext[] = $e->getLoader()->getExtension();
         }
 
-        self::assertSame(['dark.php', 'php'], $ext);
+        $this->assertSame(['dark.php', 'php'], $ext);
     }
 
     public function testRender(): void
@@ -39,7 +45,7 @@ final class ManagerTest extends TestCase
         $manager = $this->makeManager();
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
-        self::assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
+        $this->assertSame('hello', $manager->render('other:var', ['value' => 'hello']));
     }
 
     public function testGet(): void
@@ -48,10 +54,10 @@ final class ManagerTest extends TestCase
         $manager->addDependency(new ValueDependency('name', 'hello'));
 
         $view = $manager->get('other:var');
-        self::assertSame($view, $manager->get('other:var'));
+        $this->assertSame($view, $manager->get('other:var'));
 
         $manager->reset('other:var');
-        self::assertNotSame($view, $manager->get('other:var'));
+        $this->assertNotSame($view, $manager->get('other:var'));
     }
 
     public function testCompile(): void
@@ -60,15 +66,16 @@ final class ManagerTest extends TestCase
 
         $r = new \ReflectionObject($manager);
         $p = $r->getProperty('cache');
+        $p->setAccessible(true);
         /** @var ViewCache $cache */
         $cache = $p->getValue($manager);
 
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
-        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
+        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
 
         $manager->compile('other:var');
-        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
+        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testReset(): void
@@ -77,22 +84,23 @@ final class ManagerTest extends TestCase
 
         $r = new \ReflectionObject($manager);
         $p = $r->getProperty('cache');
+        $p->setAccessible(true);
         /** @var ViewCache $cache */
         $cache = $p->getValue($manager);
 
         $manager->addDependency(new ValueDependency('name', 'hello'));
         $manager->render('other:var', ['value' => 'hello']);
 
-        self::assertTrue($cache->has($manager->getContext(), 'other:var'));
+        $this->assertTrue($cache->has($manager->getContext(), 'other:var'));
         $manager->reset('other:var');
 
-        self::assertFalse($cache->has($manager->getContext(), 'other:var'));
+        $this->assertFalse($cache->has($manager->getContext(), 'other:var'));
     }
 
     public function testEngines(): void
     {
         $manager = $this->makeManager();
-        self::assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
+        $this->assertInstanceOf(NativeEngine::class, $manager->getEngines()[0]);
     }
 
     public function testNotFound(): void
@@ -101,12 +109,6 @@ final class ManagerTest extends TestCase
 
         $manager = $this->makeManager();
         $manager->render('hell-world');
-    }
-
-    protected function setUp(): void
-    {
-        $this->container = new Container();
-        $this->container->bindSingleton(LoaderInterface::class, ViewLoader::class);
     }
 
     protected function makeManager(array $config = []): ViewManager
@@ -120,8 +122,8 @@ final class ManagerTest extends TestCase
                         'directory' => '/tmp',
                     ],
                     'namespaces' => [
-                        'default' => __DIR__ . '/fixtures/default',
-                        'other' => __DIR__ . '/fixtures/other',
+                        'default' => __DIR__.'/fixtures/default',
+                        'other' => __DIR__.'/fixtures/other',
                     ],
                     'dependencies' => [
 
@@ -129,10 +131,10 @@ final class ManagerTest extends TestCase
                     'engines' => [
                         NativeEngine::class,
                     ],
-                ] + $config,
+                ] + $config
             ),
             new GlobalVariables(),
-            $this->container,
+            $this->container
         );
     }
 }

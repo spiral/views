@@ -7,4 +7,6 @@ namespace Spiral\Views\Exception;
 /**
  * Generic view component exception (view file not found and etc).
  */
-class ViewException extends \RuntimeException {}
+class ViewException extends \RuntimeException
+{
+}
